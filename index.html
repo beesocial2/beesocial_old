@@ -13,7 +13,7 @@
 <body>
 <div id="app">
 <v-app light >
-			<v-toolbar  fixed  >
+			<v-toolbar  fixed color="white" >
     				<v-toolbar-title>BeeSocial.in</v-toolbar-title>
 					<v-spacer></v-spacer>
 					
@@ -24,7 +24,20 @@
 						<v-btn icon color="pink"> <v-icon>person</v-icon></v-btn>
 	
 			</v-toolbar>	
-			<v-content>
+			<v-content color="white" style="margin-top:60px">
+			<v-container>
+			<v-layout row >
+					<v-flex xs12>
+						<h1>Кто мы такие?</h1>
+						<p><strong>Bee Social</strong> – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
+						<p>Платформа Bee Social объединяет тех, кто хочет поделиться своими ресурсами, и тех, кому нужны эти ресурсы.</p>
+						<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - криптовалюту.</p>
+						
+					</v-flex>
+				
+					
+				</v-layout>
+			</v-container>	
 			</v-content>
 
 </v-app>	
@@ -32,17 +45,7 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
 <script src="https://unpkg.com/golos-js@0.6.1/dist/golos.min.js"></script>
+<script src="./app.js"></script>
 
-<script>
-
-var app = new Vue({
-		el: '#app',
-		data: {
-
-		}
-});
-
-
-</script>
 </body>
 </html>
