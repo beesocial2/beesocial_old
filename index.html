@@ -11,6 +11,38 @@
 
 
 <body>
+<div id="app">
+<v-app light >
+			<v-toolbar  fixed  >
+    				<v-toolbar-title>BeeSocial.in</v-toolbar-title>
+					<v-spacer></v-spacer>
+					
+						<v-btn flat>О нас</v-btn>
+						<v-btn flat>Проекты</v-btn>
+						<v-btn flat>Призы</v-btn>
+						<v-btn flat>Спонсоры</v-btn>
+						<v-btn icon color="pink"> <v-icon>person</v-icon></v-btn>
+	
+			</v-toolbar>	
+			<v-content>
+			</v-content>
 
+</v-app>	
+</div>		
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script src="https://unpkg.com/golos-js@0.6.1/dist/golos.min.js"></script>
+
+<script>
+
+var app = new Vue({
+		el: '#app',
+		data: {
+
+		}
+});
+
+
+</script>
 </body>
 </html>
