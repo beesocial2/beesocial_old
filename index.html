@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>BeeSocial.in</title>
+  <title>BeeSocial</title>
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
@@ -14,17 +14,61 @@
 <div id="app">
 <v-app light >
 			<v-toolbar  fixed color="white" >
-    				<v-toolbar-title>BeeSocial.in</v-toolbar-title>
+    				<v-toolbar-title>BeeSocial</v-toolbar-title>
 					<v-spacer></v-spacer>
 					
 						<v-btn flat>О нас</v-btn>
 						<v-btn flat>Проекты</v-btn>
-						<v-btn flat>Призы</v-btn>
+						<v-btn flat>Ресурсы</v-btn>
 						<v-btn flat>Спонсоры</v-btn>
-						<v-btn icon color="pink"> <v-icon>person</v-icon></v-btn>
+						<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>
 	
 			</v-toolbar>	
 			<v-content color="white" style="margin-top:60px">
+			<v-dialog v-model="registerdialog" max-width="500px">
+				<v-card>
+				<v-card-title>Регистрация пользователя</v-card-title>
+				<v-card-text>
+					<v-form v-model="valid" ref="form" lazy-validation>
+					<v-text-field
+						label="Name"
+						v-model="name"
+						:rules="nameRules"
+						:counter="10"
+						required
+					></v-text-field>
+					<v-text-field
+					  label="E-mail"
+					  v-model="email"
+					  :rules="emailRules"
+					  required
+					></v-text-field>
+					<v-select
+					  label="Item"
+					  v-model="select"
+					  :items="items"
+					  :rules="[v => !!v || 'Item is required']"
+					  required
+					></v-select>
+					<v-checkbox
+					  label="Do you agree?"
+					  v-model="checkbox"
+					  :rules="[v => !!v || 'You must agree to continue!']"
+					  required
+					></v-checkbox>
+
+					
+				</v-form>
+				</v-card-text>
+				
+				<v-card-actions>
+				<v-btn color="success" @click="submit"  :disabled="!valid" >Зарегистрироваться</v-btn>
+				<v-btn color="info" @click="clear">Очистить поля</v-btn>
+				<v-btn color="error" @click="registerdialog=false">Закрыть</v-btn>
+				</v-card-actions>
+				</v-card>
+			</v-dialog>
+			
 			<v-container>
 			<v-layout row >
 					<v-flex xs12>
