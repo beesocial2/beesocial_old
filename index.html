@@ -18,10 +18,10 @@
     				<v-toolbar-title><img src="./black.png" width="30px" height="30px"></img> BeeSocial</v-toolbar-title>
 					<v-spacer></v-spacer>
 					
-						<v-btn flat>О нас</v-btn>
-						<v-btn flat>Проекты</v-btn>
-						<v-btn flat>Ресурсы</v-btn>
-						<v-btn flat>Спонсоры</v-btn>
+						<v-btn flat @click="page = 'about'">О нас</v-btn>
+						<v-btn flat @click="showprojects">Проекты</v-btn>
+						<v-btn flat @click="page = 'resources'">Ресурсы</v-btn>
+						<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
 						<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>
 	
 			</v-toolbar>	
@@ -32,14 +32,14 @@
 				<v-card-text>
 					<v-form v-model="valid" ref="form" lazy-validation>
 					<v-text-field
-						label="Name"
+						label="Имя Фамилия"
 						v-model="name"
 						:rules="nameRules"
 						:counter="10"
 						required
 					></v-text-field>
 					<v-text-field
-					  label="E-mail"
+					  label="Эл.почта"
 					  v-model="email"
 					  :rules="emailRules"
 					  required
@@ -52,9 +52,9 @@
 					  required
 					></v-select>
 					<v-checkbox
-					  label="Do you agree?"
+					  label="Согласен?"
 					  v-model="checkbox"
-					  :rules="[v => !!v || 'You must agree to continue!']"
+					  :rules="[v => !!v || 'Необходимо согласиться!']"
 					  required
 					></v-checkbox>
 
@@ -70,8 +70,8 @@
 				</v-card>
 			</v-dialog>
 			
-			<v-container>
-			<v-layout row >
+			<v-container v-if="page=='about'" >
+				<v-layout row >
 					<v-flex xs6>
 						<h1>Кто мы такие?</h1>
 						<p><strong>Bee Social</strong> – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
@@ -85,6 +85,33 @@
 					
 				</v-layout>
 			</v-container>	
+			
+			<v-container v-if="page=='projects'" >
+				<v-layout  warp>
+					<v-flex md3 v-for="res in reslist" :key="res.id">
+					<v-card >
+					
+					<v-card-title primary-title>
+					 <h3> {{ res.title }}</h3>
+					</v-card-title>
+					
+					<v-card-text>
+						{{ res.body }}
+					<v-card-text>
+					
+					<v-card-actions>
+						
+						<v-btn flat color="orange" > Сделать что-то </v-btn></a>
+					</v-card-actions>  
+                
+					
+               
+					</v-card>
+				</v-flex>
+					
+				</v-layout>
+			</v-container>				
+			
 			</v-content>
 			
 

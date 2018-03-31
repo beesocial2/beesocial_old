@@ -2,18 +2,22 @@
 var app = new Vue({
 		el: '#app',
 		data: {
+			page:"about",
 			registered:false,
 			registerdialog:false,
-			valid: true,
+			reslist:[],
+			
+			valid: false,
+			
 			name: '',
 			nameRules: [
-				v => !!v || 'Name is required',
+				v => !!v || 'Имя и фамилию необходимо ввести',
 				v => (v && v.length <= 10) || 'Name must be less than 10 characters'
 			],
 			email: '',
 			emailRules: [
-				v => !!v || 'E-mail is required',
-				v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+				v => !!v || 'Эл.почта необходимо ввести',
+				v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Эл.почта необходимо ввести'
 			],
 			select: null,
 			items: [
@@ -26,11 +30,17 @@ var app = new Vue({
 		},
 		
 		methods: {
-			submit () {
-		
+			showprojects: function (event){
+				this.page="projects";
+				
+				
 			},
-			clear () {
-			this.$refs.form.reset()
+			submit: function (event) {
+				
+			},
+			clear:function (event) {
+				valid=false;
+				this.$refs.form.reset()
 			}
 		},
 });
