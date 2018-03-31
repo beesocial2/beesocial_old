@@ -5,7 +5,7 @@ var app = new Vue({
 			page:"about",
 			registered:false,
 			registerdialog:false,
-			reslist:[],
+			projlist:[],
 			
 			valid: false,
 			
@@ -32,7 +32,12 @@ var app = new Vue({
 		methods: {
 			showprojects: function (event){
 				this.page="projects";
+				console.log('переход на проекты');
 				
+			},
+			showresources: function (event){
+				this.page="resources";
+				console.log('переход на ресурсы');
 				
 			},
 			submit: function (event) {
