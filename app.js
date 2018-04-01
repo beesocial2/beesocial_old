@@ -13,6 +13,14 @@ let auth = function(callback) {
 	}
 };
 
+let $loader = document.getElementsByClassName('lding')[0];
+let loadingShow = function() {
+	$loader.style.display = 'block';
+};
+let loadingHide = function() {
+	$loader.style.display = 'none';
+};
+
 let mainTag = 'beesocial';
 
 var app = new Vue({
@@ -27,6 +35,16 @@ var app = new Vue({
 			resourceList: [],
 			resourceDialog: false,
 			resourceDetail: {},
+
+			transfersHeaders: [
+				{ text: 'Time', value: 'time' },
+				{ text: 'Transaction ID', value: 'transaction_id' },
+				{ text: 'From', value: 'from' },
+				{ text: 'To', value: 'to' },
+				{ text: 'Amount', value: 'amount' },
+				{ text: 'Memo', value: 'memo' }
+			],
+			transfersData: [],
 			
 			valid: false,
 			
@@ -144,17 +162,49 @@ var app = new Vue({
 				});
 			},
 			transfer: function() {
-				golos.broadcast.transfer(wif['active'], username, app.resourceDetail.author, `${app.resourceDetail.combs}.000 GOLOS`, '', function(err, result) {
-					//console.log(err, result);
-					if ( ! err) {
-						//console.log('transfer', result);
-						swal({
-							title: 'Вы купили этот ресурс!',
-							type: 'success',
-						});
-					}
-					else console.error(err);
+				auth(function() {
+					golos.broadcast.transfer(wif['active'], username, app.resourceDetail.author, `${app.resourceDetail.combs}.000 GOLOS`, '', function(err, result) {
+						//console.log(err, result);
+						if ( ! err) {
+							//console.log('transfer', result);
+							swal({
+								title: 'Вы купили этот ресурс!',
+								type: 'success',
+							});
+						}
+						else console.error(err);
+					});
 				});
-			}
+			},
+			showTransfers: function(event){
+				this.page = 'transfers';
+				golos.api.getAccountHistory(username, -1, 99, function(err, transactions) {
+					console.log(transactions);
+					loadingHide();
+					if (transactions.length > 0) {
+						transactions.reverse();
+						let operationsCount = 0;
+						transactions.forEach(function(transaction) {
+							if (transaction[1].op[0] == 'transfer') {
+								operationsCount++;
+								console.log(transaction[1].trx_id);
+								app.transfersData.push({
+									value: false,
+									time: transaction[1].timestamp,
+									transaction_id: transaction[1].trx_id,
+									from: transaction[1].op[1].from ? transaction[1].op[1].from : '',
+									to: transaction[1].op[1].to ? transaction[1].op[1].to : '',
+									amount: transaction[1].op[1].amount ? transaction[1].op[1].amount : '',
+									memo: transaction[1].op[1].memo ? transaction[1].op[1].memo : ''
+								});
+							}
+						});
+						if (operationsCount == 0) swal({title: 'Error', type: 'error', text: `Not have transfers operations!`});
+					}
+					else {
+						swal({title: 'Error', type: 'error', text: err});
+					}
+				});
+			},
 		},
 });

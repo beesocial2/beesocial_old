@@ -17,6 +17,7 @@
 					<v-btn flat @click="showprojects">Проекты</v-btn>
 					<v-btn flat @click="showResources">Ресурсы</v-btn>
 					<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
+					<v-btn flat @click="showTransfers">Трансферы</v-btn>
 					<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>
 				</v-toolbar>	
 				<v-content color="white" style="margin-top:60px">
@@ -112,6 +113,26 @@
 						</v-layout>
 					</v-container>
 					
+					<v-container v-if="page=='transfers'" >
+						<v-layout warp>
+							<v-data-table
+								:headers="transfersHeaders"
+								:items="transfersData"
+								hide-actions
+								class="elevation-1"
+							>
+								<template slot="items" slot-scope="props">
+									<td>{{ props.item.time }}</td>
+									<td>{{ props.item.transaction_id }}</td>
+									<td>{{ props.item.from }}</td>
+									<td>{{ props.item.to }}</td>
+									<td>{{ props.item.amount }}</td>
+									<td>{{ props.item.memo }}</td>
+								</template>
+							</v-data-table>
+						</v-layout>
+					</v-container>
+					
 					<v-dialog v-model="resourceDialog" max-width="500px">
 						<v-card>
 							<v-card-title>
@@ -203,7 +224,17 @@
 
 				</v-content>
 			</v-app>
-		</div>		
+		</div>
+	<div class="lding">
+		<div class="lds-css ng-scope">
+			<div class="lds-cube">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</div>
 	<script src="https://unpkg.com/vue/dist/vue.js"></script>
 	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
 	<script src="https://unpkg.com/golos-js@0.6.1/dist/golos.min.js"></script>
