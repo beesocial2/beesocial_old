@@ -12,6 +12,7 @@ var app = new Vue({
 			registerdialog: false,
 			newResourceDialog: false,
 			projlist: [],
+			resourceList: [],
 			
 			valid: false,
 			
@@ -49,14 +50,30 @@ var app = new Vue({
 				console.log('переход на проекты');
 				
 			},
-			showresources: function(event){
+			showResources: function(event){
 				this.page = 'resources';
-				console.log('переход на ресурсы');
-				
+				app.resourceList = [];
+				var query = {
+					select_tags: ['beesocial'],
+					limit: 100,
+				};
+				golos.api.getDiscussionsByCreated(query, function(err, result) {
+					//console.log(err, result);
+					if ( ! err) {
+						result.forEach(function(item) {
+							let jsonMetadata = JSON.parse(item.json_metadata);
+							app.resourceList.push({
+								title: jsonMetadata.title,
+								description: jsonMetadata.description,
+							});
+						});
+					}
+					else console.error(err);
+				});
 			},
 			submit: function(event) {
 				let parentAuthor = '';
-				let parentPermlink = 'test';
+				let parentPermlink = 'beesocial';
 				let permlink = Date.now().toString();
 				let title = this.title;
 				let body = '<h1><a href="">Этот пост был создан на платформе BeeSocial</a></h1>' + this.description;
@@ -72,7 +89,7 @@ var app = new Vue({
 					if ( ! err) {
 						//console.log('post: ', result);
 						//window.location.hash = username + '/' + str;
-						this.newResourceDialog = false;
+						app.newResourceDialog = false;
 					} else console.error(err);
 				});
 			}
