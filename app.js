@@ -36,7 +36,7 @@ var app = new Vue({
 			resourceDialog: false,
 			resourceDetail: {},
 			
-			hasWif: wif,
+			hasWif: username,
 			
 			combs: localStorage && localStorage.combs ? localStorage.combs : '',
 
@@ -235,8 +235,8 @@ var app = new Vue({
 				app.loginDialog = true;
 			},
 			logout: function() {
-				window.wif = null;
-				window.username = null;
+				wif = null;
+				username = null;
 				delete localStorage.wif;
 				delete localStorage.username;
 				app.hasWif = false;
