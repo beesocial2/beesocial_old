@@ -1,126 +1,104 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>BeeSocial</title>
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-  
-</head>
-
-
-<body>
-<div id="app">
-<v-app light style="background-color: rgba(255,255,255,1);" >
-			<v-toolbar  fixed color="white" >
-					
-    				<v-toolbar-title><img src="./black.png" width="30px" height="30px"></img> BeeSocial</v-toolbar-title>
+	<head>
+		<title>BeeSocial</title>
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+		<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="app">
+			<v-app light style="background-color: rgba(255,255,255,1);" >
+				<v-toolbar  fixed color="white" >
+					<v-toolbar-title><img src="./black.png" width="30px" height="30px"> BeeSocial</v-toolbar-title>
 					<v-spacer></v-spacer>
+					<v-btn flat @click="page = 'about'">О нас</v-btn>
+					<v-btn flat @click="showprojects">Проекты</v-btn>
+					<v-btn flat @click="showresources">Ресурсы</v-btn>
+					<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
+					<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>
+				</v-toolbar>	
+				<v-content color="white" style="margin-top:60px">
 					
-						<v-btn flat @click="page = 'about'">О нас</v-btn>
-						<v-btn flat @click="showprojects">Проекты</v-btn>
-						<v-btn flat @click="showresources">Ресурсы</v-btn>
-						<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
-						<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>
-	
-			</v-toolbar>	
-			<v-content color="white" style="margin-top:60px">
-			<v-dialog v-model="registerdialog" max-width="500px">
-				<v-card>
-				<v-card-title> <h3>Регистрация пользователя </h3></v-card-title>
-				<v-card-text>
-					<v-form v-model="valid" ref="form" lazy-validation>
-					<v-text-field
-						label="Имя Фамилия"
-						v-model="name"
-						:rules="nameRules"
-						:counter="10"
-						required
-					></v-text-field>
-					<v-text-field
-					  label="Эл.почта"
-					  v-model="email"
-					  :rules="emailRules"
-					  required
-					></v-text-field>
-					<v-select
-					  label="Item"
-					  v-model="select"
-					  :items="items"
-					  :rules="[v => !!v || 'Item is required']"
-					  required
-					></v-select>
-					<v-checkbox
-					  label="Согласен?"
-					  v-model="checkbox"
-					  :rules="[v => !!v || 'Необходимо согласиться!']"
-					  required
-					></v-checkbox>
+					<v-dialog v-model="registerdialog" max-width="500px">
+						<v-card>
+							<v-card-title> <h3>Регистрация пользователя </h3></v-card-title>
+							<v-card-text>
+								<v-form v-model="valid" ref="form" lazy-validation>
+									<v-select
+									  label="Тип аккаунта"
+									  v-model="select"
+									  :items="items"
+									  :rules="[v => !!v || 'Item is required']"
+									  required
+									></v-select>
+									<v-text-field
+									  label="Эл. почта"
+									  v-model="email"
+									  :rules="emailRules"
+									  required
+									></v-text-field>
+									<v-text-field
+										label="Логин"
+										v-model="login"
+										:rules="loginRules"
+										:counter="16"
+										required
+									></v-text-field>
+									<v-text-field
+										label="Пароль"
+										v-model="password"
+										:rules="passwordRules"
+										required
+									></v-text-field>
+								</v-form>
+							</v-card-text>
+							<v-card-actions>
+								<v-btn color="success" @click="submit"  :disabled="!valid" >Зарегистрироваться</v-btn>
+								<v-btn color="error" @click="registerdialog=false">Закрыть</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
 
-					
-				</v-form>
-				</v-card-text>
-				
-				<v-card-actions>
-				<v-btn color="success" @click="submit"  :disabled="!valid" >Зарегистрироваться</v-btn>
-				<v-btn color="info" @click="clear">Очистить поля</v-btn>
-				<v-btn color="error" @click="registerdialog=false">Закрыть</v-btn>
-				</v-card-actions>
-				</v-card>
-			</v-dialog>
-			
-			<v-container v-if="page=='about'" >
-				<v-layout row >
-					<v-flex xs6>
-						<h1>Кто мы такие?</h1>
-						<p><strong>Bee Social</strong> – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
-						<p>Платформа Bee Social объединяет тех, кто хочет поделиться своими ресурсами, и тех, кому нужны эти ресурсы.</p>
-						<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - криптовалюту.</p>
-						
-					</v-flex>
-					<v-flex xs6>
-						<img src="./black.png" alt="" width="600px" height="600px"></div>
-					</v-flex>
-					
-				</v-layout>
-			</v-container>	
-			
-			<v-container v-if="page=='projects'" >
-				<v-layout  warp>
-					<v-flex md3 v-for="proj in projlist" :key="proj.id">
-					<v-card >
-					
-					<v-card-title primary-title>
-					 <h3> {{ proj.title }}</h3>
-					</v-card-title>
-					
-					<v-card-text>
-						{{ proj.body }}
-					<v-card-text>
-					
-					<v-card-actions>
-						
-						<v-btn flat color="orange" > Сделать что-то </v-btn></a>
-					</v-card-actions>  
-                
-					
-               
-					</v-card>
-				</v-flex>
-					
-				</v-layout>
-			</v-container>				
-			
-			</v-content>
-			
+					<v-container v-if="page=='about'" >
+						<v-layout row >
+							<v-flex xs6>
+								<h1>Кто мы такие?</h1>
+								<p><strong>Bee Social</strong> – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
+								<p>Платформа Bee Social объединяет тех, кто хочет поделиться своими ресурсами, и тех, кому нужны эти ресурсы.</p>
+								<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - криптовалюту.</p>
+							</v-flex>
+							<v-flex xs6>
+								<img src="./black.png" alt="" width="600px" height="600px">
+							</v-flex>
+						</v-layout>
+					</v-container>
 
-</v-app>	
-</div>		
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
-<script src="https://unpkg.com/golos-js@0.6.1/dist/golos.min.js"></script>
-<script src="./app.js"></script>
+					<v-container v-if="page=='projects'" >
+						<v-layout  warp>
+							<v-flex md3 v-for="proj in projlist" :key="proj.id">
+								<v-card>
+									<v-card-title primary-title>
+										<h3> {{ proj.title }}</h3>
+									</v-card-title>
+									<v-card-text>
+										{{ proj.body }}
+									</v-card-text>
+									<v-card-actions>
+										<v-btn flat color="orange" > Сделать что-то </v-btn>
+									</v-card-actions> 
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-container>				
 
-</body>
+				</v-content>
+			</v-app>
+		</div>		
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+	<script src="https://unpkg.com/golos-js@0.6.1/dist/golos.min.js"></script>
+	<script src="./app.js"></script>
+	</body>
 </html>
