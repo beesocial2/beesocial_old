@@ -36,7 +36,7 @@ var app = new Vue({
 			resourceDialog: false,
 			resourceDetail: {},
 			
-			hasWif: window.wif,
+			hasWif: wif,
 			
 			combs: localStorage && localStorage.combs ? localStorage.combs : '',
 
