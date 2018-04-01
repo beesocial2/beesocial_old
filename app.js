@@ -1,7 +1,7 @@
 golos.config.set('websocket', 'wss://ws.testnet.golos.io');
 golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 
-localStorage && localStorage.wif ? window.wif = localStorage.wif : window.wif = '';
+localStorage && localStorage.wif ? window.wif = localStorage.wif : window.wif = {};
 localStorage && localStorage.username ? window.username = localStorage.username : window.username = '';
 
 let callbackAuth;
@@ -81,13 +81,13 @@ var app = new Vue({
 			},
 			submit: function(event) {
 				if (app.loginDialog) {
-					const roles = ['posting'];
+					const roles = ['posting', 'active'];
 					let keys = golos.auth.getPrivateKeys(this.login, this.password, roles);
 					golos.api.getAccounts([this.login], function(err, response) {
 						if (response && response[0] && response[0].posting.key_auths[0][0] == keys.postingPubkey) {
-							wif = keys.posting;
+							wif = keys;
 							localStorage.wif = wif;
-							let resultWifToPublic = golos.auth.wifToPublic(wif);
+							let resultWifToPublic = golos.auth.wifToPublic(wif['posting']);
 							let result = golos.api.getKeyReferences([resultWifToPublic], function(err, result) {
 								if (result && result[0]) {
 									username = result[0][0];
@@ -113,7 +113,7 @@ var app = new Vue({
 						combs: this.combs
 					};
 					auth(function() {
-						golos.broadcast.comment(wif, parentAuthor, parentPermlink, username, permlink, title, body, jsonMetadata, function (err, result) {
+						golos.broadcast.comment(wif['posting'], parentAuthor, parentPermlink, username, permlink, title, body, jsonMetadata, function (err, result) {
 							//console.log(err, result);
 							if ( ! err) {
 								//console.log('post: ', result);
@@ -144,5 +144,18 @@ var app = new Vue({
 					else console.error(err);
 				});
 			},
+			transfer: function() {
+				golos.broadcast.transfer(wif['active'], username, app.resourceDetail.author, `${app.resourceDetail.combs}.000 GOLOS`, '', function(err, result) {
+					//console.log(err, result);
+					if ( ! err) {
+						//console.log('transfer', result);
+						swal({
+							title: 'Вы купили этот ресурс!',
+							type: 'success',
+						});
+					}
+					else console.error(err);
+				});
+			}
 		},
 });
