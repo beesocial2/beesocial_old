@@ -44,14 +44,12 @@
 									<v-text-field
 										label="Логин"
 										v-model="login"
-										:rules="loginRules"
 										:counter="16"
 										required
 									></v-text-field>
 									<v-text-field
 										label="Пароль"
 										v-model="password"
-										:rules="passwordRules"
 										required
 									></v-text-field>
 								</v-form>
@@ -113,6 +111,32 @@
 							</v-flex>
 						</v-layout>
 					</v-container>
+					
+					<v-dialog v-model="loginDialog" max-width="500px">
+						<v-card>
+							<v-card-title>
+								<h3>Вход в систему</h3>
+							</v-card-title>
+							<v-card-text>
+								<v-form v-model="valid" ref="form" lazy-validation>
+									<v-text-field
+										label="Логин"
+										v-model="login"
+										required
+									></v-text-field>
+									<v-text-field
+									  label="Пароль"
+									  v-model="password"
+									  required
+									></v-text-field>
+								</v-form>
+							</v-card-text>
+							<v-card-actions>
+								<v-btn color="success" @click="submit" :disabled="!valid">Войти</v-btn>
+								<v-btn color="error" @click="newResourceDialog=false">Закрыть</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
 					
 					<v-dialog v-model="newResourceDialog" max-width="500px">
 						<v-card>
