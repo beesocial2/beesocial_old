@@ -11,7 +11,7 @@
 	<body>
 		<div id="app">
 			<v-app light style="background-color: rgba(255,255,255,1);" >
-				<v-toolbar  fixed color="white" >
+				<v-toolbar fixed color="white" >
 					<v-toolbar-title><img src="./black.png" width="30px" height="30px"> BeeSocial</v-toolbar-title>
 					<v-spacer></v-spacer>
 					<v-btn flat @click="page = 'about'">О нас</v-btn>
@@ -19,10 +19,22 @@
 					<v-btn flat @click="showResources">Ресурсы</v-btn>
 					<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
 					<v-btn flat @click="showTransfers">Приобритенные ресурсы</v-btn>
-					<v-btn flat @click="registerdialog=true">Регистрация</v-btn>
-					<v-btn flat @click="showLogin">Авторизация</v-btn>
-					<v-btn flat @click="registerdialog=true">Выход</v-btn>
-					<!--<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>-->
+					<v-menu bottom left>
+						<v-btn icon color="pink" slot="activator" dark>
+							<v-icon>person</v-icon>
+						</v-btn>
+						<v-list>
+							<v-list-tile @click="showLogin" v-if="( ! hasWif)">
+								<v-list-tile-title>Авторизация</v-list-tile-title>
+							</v-list-tile>
+							<v-list-tile @click="registerdialog=true" v-if="( ! hasWif)">
+								<v-list-tile-title>Регистрация</v-list-tile-title>
+							</v-list-tile>
+							<v-list-tile @click="logout" v-if="(hasWif)">
+								<v-list-tile-title>Выход</v-list-tile-title>
+							</v-list-tile>
+						</v-list>
+					</v-menu>
 				</v-toolbar>	
 				<v-content color="white" style="margin-top:60px">
 					

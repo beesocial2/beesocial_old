@@ -35,6 +35,8 @@ var app = new Vue({
 			resourceList: [],
 			resourceDialog: false,
 			resourceDetail: {},
+			
+			hasWif: false,
 
 			transfersHeaders: [
 				{ text: 'Дата и время приобритения', value: 'time' },
@@ -117,6 +119,7 @@ var app = new Vue({
 									username = result[0][0];
 									localStorage.username = username;
 									app.loginDialog = false;
+									app.hasWif = true;
 									if (callbackAuth) callbackAuth();
 								} else if (err) console.error(err);
 							});
@@ -189,39 +192,48 @@ var app = new Vue({
 			},
 			showTransfers: function(event){
 				this.page = 'transfers';
-				loadingShow();
-				golos.api.getAccountHistory(username, -1, 99, function(err, transactions) {
-					loadingHide();
-					if (transactions.length > 0) {
-						transactions.reverse();
-						let operationsCount = 0;
-						transactions.forEach(function(transaction) {
-							if (transaction[1].op[0] == 'transfer' && transaction[1].op[1].memo) {
-								let metaData = JSON.parse(transaction[1].op[1].memo);
-								if (metaData && metaData.combs) {
-									operationsCount++;
-									app.transfersData.push({
-										value: false,
-										time: transaction[1].timestamp,
-										title: metaData.title,
-										author: metaData.author,
-										combs: metaData.combs,
-										howGet: metaData.howGet,
-										contacts: metaData.contacts,
-										description: metaData.description
-									});
+				auth(function() {
+					loadingShow();
+					golos.api.getAccountHistory(username, -1, 99, function(err, transactions) {
+						loadingHide();
+						if (transactions.length > 0) {
+							transactions.reverse();
+							let operationsCount = 0;
+							transactions.forEach(function(transaction) {
+								if (transaction[1].op[0] == 'transfer' && transaction[1].op[1].memo) {
+									let metaData = JSON.parse(transaction[1].op[1].memo);
+									if (metaData && metaData.combs) {
+										operationsCount++;
+										app.transfersData.push({
+											value: false,
+											time: transaction[1].timestamp,
+											title: metaData.title,
+											author: metaData.author,
+											combs: metaData.combs,
+											howGet: metaData.howGet,
+											contacts: metaData.contacts,
+											description: metaData.description
+										});
+									}
 								}
-							}
-						});
-						if (operationsCount == 0) swal({title: 'Error', type: 'error', text: `Вы пока что не приобритали ресурсов!`});
-					}
-					else {
-						swal({title: 'Error', type: 'error', text: err});
-					}
+							});
+							if (operationsCount == 0) swal({title: 'Error', type: 'error', text: `Вы пока что не приобритали ресурсов!`});
+						}
+						else {
+							swal({title: 'Error', type: 'error', text: err});
+						}
+					});
 				});
 			},
 			showLogin: function() {
 				app.loginDialog = true;
+			},
+			logout: function() {
+				window.wif = null;
+				window.username = null;
+				delete localStorage.wif;
+				delete localStorage.username;
+				app.hasWif = false;
 			}
 		},
 });
