@@ -37,12 +37,13 @@ var app = new Vue({
 			resourceDetail: {},
 
 			transfersHeaders: [
-				{ text: 'Time', value: 'time' },
-				{ text: 'Transaction ID', value: 'transaction_id' },
-				{ text: 'From', value: 'from' },
-				{ text: 'To', value: 'to' },
-				{ text: 'Amount', value: 'amount' },
-				{ text: 'Memo', value: 'memo' }
+				{ text: 'Дата и время приобритения', value: 'time' },
+				{ text: 'Название', value: 'title' },
+				{ text: 'Спонсор', value: 'author' },
+				{ text: 'Соты', value: 'combs' },
+				{ text: 'Как получить', value: 'howGet' },
+				{ text: 'Контакты', value: 'contacts' },
+				{ text: 'Описание', value: 'description' }
 			],
 			transfersData: [],
 			
@@ -81,7 +82,9 @@ var app = new Vue({
 					select_tags: [mainTag],
 					limit: 100,
 				};
+				loadingShow();
 				golos.api.getDiscussionsByCreated(query, function(err, result) {
+					loadingHide();
 					//console.log(err, result);
 					if ( ! err) {
 						result.forEach(function(item) {
@@ -99,13 +102,17 @@ var app = new Vue({
 			},
 			submit: function(event) {
 				if (app.loginDialog) {
+					loadingShow();
 					const roles = ['posting', 'active'];
 					wif = golos.auth.getPrivateKeys(this.login, this.password, roles);
 					golos.api.getAccounts([this.login], function(err, response) {
+						loadingHide();
 						if (response && response[0] && response[0].posting.key_auths[0][0] == wif.postingPubkey) {
 							localStorage.wif = JSON.stringify(wif);
+							loadingShow();
 							let resultWifToPublic = golos.auth.wifToPublic(wif['posting']);
 							let result = golos.api.getKeyReferences([resultWifToPublic], function(err, result) {
+								loadingHide();
 								if (result && result[0]) {
 									username = result[0][0];
 									localStorage.username = username;
@@ -130,7 +137,9 @@ var app = new Vue({
 						combs: this.combs
 					};
 					auth(function() {
+						loadingShow();
 						golos.broadcast.comment(wif['posting'], parentAuthor, parentPermlink, username, permlink, title, body, jsonMetadata, function (err, result) {
+							loadingHide();
 							//console.log(err, result);
 							if ( ! err) {
 								//console.log('post: ', result);
@@ -143,7 +152,9 @@ var app = new Vue({
 				}
 			},
 			getResourceDetail: function(author, permlink) {
+				loadingShow();
 				golos.api.getContent(author, permlink, function(err, item) {
+					loadingHide();
 					//console.log(err, item);
 					if ( ! err) {
 						let jsonMetadata = JSON.parse(item.json_metadata);
@@ -163,14 +174,14 @@ var app = new Vue({
 			},
 			transfer: function() {
 				auth(function() {
-					golos.broadcast.transfer(wif['active'], username, app.resourceDetail.author, `${app.resourceDetail.combs}.000 GOLOS`, '', function(err, result) {
+					loadingShow();
+					golos.broadcast.transfer(wif['active'], username, app.resourceDetail.author, `${app.resourceDetail.combs}.000 GOLOS`, JSON.stringify(app.resourceDetail), function(err, result) {
+						loadingHide();
 						//console.log(err, result);
 						if ( ! err) {
 							//console.log('transfer', result);
-							swal({
-								title: 'Вы купили этот ресурс!',
-								type: 'success',
-							});
+							app.resourceDialog = false;
+							swal({title: 'Вы купили этот ресурс!',type: 'success' });
 						}
 						else console.error(err);
 					});
@@ -178,25 +189,28 @@ var app = new Vue({
 			},
 			showTransfers: function(event){
 				this.page = 'transfers';
+				loadingShow();
 				golos.api.getAccountHistory(username, -1, 99, function(err, transactions) {
-					console.log(transactions);
 					loadingHide();
 					if (transactions.length > 0) {
 						transactions.reverse();
 						let operationsCount = 0;
 						transactions.forEach(function(transaction) {
-							if (transaction[1].op[0] == 'transfer') {
+							if (transaction[1].op[0] == 'transfer' && transaction[1].op[1].memo) {
 								operationsCount++;
-								console.log(transaction[1].trx_id);
-								app.transfersData.push({
-									value: false,
-									time: transaction[1].timestamp,
-									transaction_id: transaction[1].trx_id,
-									from: transaction[1].op[1].from ? transaction[1].op[1].from : '',
-									to: transaction[1].op[1].to ? transaction[1].op[1].to : '',
-									amount: transaction[1].op[1].amount ? transaction[1].op[1].amount : '',
-									memo: transaction[1].op[1].memo ? transaction[1].op[1].memo : ''
-								});
+								let metaData = JSON.parse(transaction[1].op[1].memo);
+								if (metaData && metaData.combs) {
+									app.transfersData.push({
+										value: false,
+										time: transaction[1].timestamp,
+										title: metaData.title,
+										author: metaData.author,
+										combs: metaData.combs,
+										howGet: metaData.howGet,
+										contacts: metaData.contacts,
+										description: metaData.description
+									});
+								}
 							}
 						});
 						if (operationsCount == 0) swal({title: 'Error', type: 'error', text: `Not have transfers operations!`});

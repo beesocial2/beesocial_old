@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
 		<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+		<link href="./custom.css" rel="stylesheet">
 	</head>
 	<body>
 		<div id="app">
@@ -123,11 +124,12 @@
 							>
 								<template slot="items" slot-scope="props">
 									<td>{{ props.item.time }}</td>
-									<td>{{ props.item.transaction_id }}</td>
-									<td>{{ props.item.from }}</td>
-									<td>{{ props.item.to }}</td>
-									<td>{{ props.item.amount }}</td>
-									<td>{{ props.item.memo }}</td>
+									<td>{{ props.item.title }}</td>
+									<td>{{ props.item.author }}</td>
+									<td>{{ props.item.combs }}</td>
+									<td>{{ props.item.howGet }}</td>
+									<td>{{ props.item.contacts }}</td>
+									<td>{{ props.item.description }}</td>
 								</template>
 							</v-data-table>
 						</v-layout>
