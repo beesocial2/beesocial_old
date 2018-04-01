@@ -44,17 +44,17 @@ var app = new Vue({
 		},
 		
 		methods: {
-			showprojects: function (event){
+			showprojects: function(event){
 				this.page = 'projects';
 				console.log('переход на проекты');
 				
 			},
-			showresources: function (event){
+			showresources: function(event){
 				this.page = 'resources';
 				console.log('переход на ресурсы');
 				
 			},
-			submit: function (event) {
+			submit: function(event) {
 				let parentAuthor = '';
 				let parentPermlink = 'test';
 				let permlink = Date.now().toString();
