@@ -113,6 +113,7 @@ var app = new Vue({
 								//console.log('post: ', result);
 								//window.location.hash = username + '/' + str;
 								app.newResourceDialog = false;
+								app.showResources();
 							} else console.error(err);
 						});
 					});
