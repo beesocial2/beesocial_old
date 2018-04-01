@@ -4,6 +4,7 @@ var app = new Vue({
 			page: 'about',
 			registered: false,
 			registerdialog: false,
+			newResourceDialog: false,
 			projlist: [],
 			
 			valid: false,

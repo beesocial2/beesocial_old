@@ -23,7 +23,9 @@
 					
 					<v-dialog v-model="registerdialog" max-width="500px">
 						<v-card>
-							<v-card-title> <h3>Регистрация пользователя </h3></v-card-title>
+							<v-card-title>
+								<h3>Регистрация пользователя</h3>
+							</v-card-title>
 							<v-card-text>
 								<v-form v-model="valid" ref="form" lazy-validation>
 									<v-select
@@ -67,7 +69,7 @@
 								<h1>Кто мы такие?</h1>
 								<p><strong>Bee Social</strong> – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
 								<p>Платформа Bee Social объединяет тех, кто хочет поделиться своими ресурсами, и тех, кому нужны эти ресурсы.</p>
-								<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - криптовалюту.</p>
+								<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - токены.</p>
 							</v-flex>
 							<v-flex xs6>
 								<img src="./black.png" alt="" width="600px" height="600px">
@@ -76,7 +78,7 @@
 					</v-container>
 
 					<v-container v-if="page=='projects'" >
-						<v-layout  warp>
+						<v-layout warp>
 							<v-flex md3 v-for="proj in projlist" :key="proj.id">
 								<v-card>
 									<v-card-title primary-title>
@@ -91,7 +93,69 @@
 								</v-card>
 							</v-flex>
 						</v-layout>
-					</v-container>				
+					</v-container>
+					
+					<v-container v-if="page=='resources'" >
+						<v-layout warp>
+							<v-btn color="success" @click="newResourceDialog=true">Создать ресурс</v-btn>
+							<v-flex md3 v-for="proj in projlist" :key="proj.id">
+								<v-card>
+									<v-card-title primary-title>
+										<h3> {{ proj.title }}</h3>
+									</v-card-title>
+									<v-card-text>
+										{{ proj.body }}
+									</v-card-text>
+									<v-card-actions>
+										<v-btn flat color="orange" > Сделать что-то </v-btn>
+									</v-card-actions> 
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-container>
+					
+					<v-dialog v-model="newResourceDialog" max-width="500px">
+						<v-card>
+							<v-card-title>
+								<h3>Создание ресурса</h3>
+							</v-card-title>
+							<v-card-text>
+								<v-form v-model="valid" ref="form" lazy-validation>
+									<v-text-field
+									  label="Описание"
+									  v-model="description"
+									  :rules="descriptionRules"
+									  multi-line
+									  required
+									></v-text-field>
+									<v-text-field
+										label="Как получить ресурс"
+										v-model="howGet"
+										:rules="howGetRules"
+										required
+									></v-text-field>
+									<v-text-field
+										label="Контакты"
+										v-model="contacts"
+										:rules="contactsRules"
+										required
+									></v-text-field>
+									<v-text-field
+										label="Кол-во сот"
+										v-model="compb"
+										:rules="combsRules"
+										required
+										suffix="COMB"
+										type="number"
+									></v-text-field>
+								</v-form>
+							</v-card-text>
+							<v-card-actions>
+								<v-btn color="success" @click="submit"  :disabled="!valid" >Создать ресурс</v-btn>
+								<v-btn color="error" @click="registerdialog=false">Закрыть</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
 
 				</v-content>
 			</v-app>
