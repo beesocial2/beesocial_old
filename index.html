@@ -122,30 +122,31 @@
 							<v-card-text>
 								<v-form v-model="valid" ref="form" lazy-validation>
 									<v-text-field
+										label="Название"
+										v-model="title"
+										required
+									></v-text-field>
+									<v-text-field
 									  label="Описание"
 									  v-model="description"
-									  :rules="descriptionRules"
 									  multi-line
 									  required
 									></v-text-field>
 									<v-text-field
 										label="Как получить ресурс"
 										v-model="howGet"
-										:rules="howGetRules"
 										required
 									></v-text-field>
 									<v-text-field
 										label="Контакты"
 										v-model="contacts"
-										:rules="contactsRules"
 										required
 									></v-text-field>
 									<v-text-field
 										label="Кол-во сот"
-										v-model="compb"
-										:rules="combsRules"
+										v-model="combs"
 										required
-										suffix="COMB"
+										suffix="COMBS"
 										type="number"
 									></v-text-field>
 								</v-form>
