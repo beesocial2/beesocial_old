@@ -13,6 +13,8 @@ let auth = function(callback) {
 	}
 };
 
+let mainTag = 'beesocial';
+
 var app = new Vue({
 		el: '#app',
 		data: {
@@ -23,6 +25,8 @@ var app = new Vue({
 			newResourceDialog: false,
 			projlist: [],
 			resourceList: [],
+			resourceDialog: false,
+			resourceDetail: {},
 			
 			valid: false,
 			
@@ -46,7 +50,7 @@ var app = new Vue({
 			combs: '',
 		},
 		
-		methods: {
+		methods: {			
 			showprojects: function(event){
 				this.page = 'projects';
 				console.log('переход на проекты');
@@ -56,7 +60,7 @@ var app = new Vue({
 				this.page = 'resources';
 				app.resourceList = [];
 				var query = {
-					select_tags: ['beesocial'],
+					select_tags: [mainTag],
 					limit: 100,
 				};
 				golos.api.getDiscussionsByCreated(query, function(err, result) {
@@ -65,6 +69,8 @@ var app = new Vue({
 						result.forEach(function(item) {
 							let jsonMetadata = JSON.parse(item.json_metadata);
 							app.resourceList.push({
+								author: item.author,
+								permlink: item.permlink,
 								title: jsonMetadata.title,
 								description: jsonMetadata.description,
 							});
@@ -95,7 +101,7 @@ var app = new Vue({
 				}
 				else if (app.newResourceDialog) {
 					let parentAuthor = '';
-					let parentPermlink = 'beesocial';
+					let parentPermlink = mainTag;
 					let permlink = Date.now().toString();
 					let title = this.title;
 					let body = '<h1><a href="">Этот пост был создан на платформе BeeSocial</a></h1>' + this.description;
@@ -118,6 +124,25 @@ var app = new Vue({
 						});
 					});
 				}
-			}
+			},
+			getResourceDetail: function(author, permlink) {
+				golos.api.getContent(author, permlink, function(err, item) {
+					//console.log(err, item);
+					if ( ! err) {
+						let jsonMetadata = JSON.parse(item.json_metadata);
+						app.resourceDetail = {
+							author: item.author,
+							permlink: item.permlink,
+							title: jsonMetadata.title,
+							description: jsonMetadata.description,
+							howGet: jsonMetadata.howGet,
+							contacts: jsonMetadata.contacts,
+							combs: jsonMetadata.combs,
+						};
+						app.resourceDialog = true;
+					}
+					else console.error(err);
+				});
+			},
 		},
 });

@@ -105,12 +105,31 @@
 										{{ proj.description }}
 									</v-card-text>
 									<v-card-actions>
-										<v-btn flat color="orange">Подробнее...</v-btn>
+										<v-btn flat color="orange" @click="getResourceDetail(proj.author, proj.permlink)">Подробнее...</v-btn>
 									</v-card-actions> 
 								</v-card>
 							</v-flex>
 						</v-layout>
 					</v-container>
+					
+					<v-dialog v-model="resourceDialog" max-width="500px">
+						<v-card>
+							<v-card-title>
+								<h3>Подробная информация о ресурсе</h3>
+							</v-card-title>
+							<v-card-text>
+								<h4>Название: {{ resourceDetail.title }}</h4>
+								<h4>Описание: {{ resourceDetail.description }}</h4>
+								<h4>Как получить ресурс: {{ resourceDetail.howGet }}</h4>
+								<h4>Контакты: {{ resourceDetail.contacts }}</h4>
+								<h4>Кол-во сот: {{ resourceDetail.combs }}</h4>
+							</v-card-text>
+							<v-card-actions>
+								<v-btn color="success" @click="submit">Приобрести</v-btn>
+								<v-btn color="error" @click="resourceDialog=false">Закрыть</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
 					
 					<v-dialog v-model="loginDialog" max-width="500px">
 						<v-card>
