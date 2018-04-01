@@ -19,6 +19,10 @@
 					<v-btn flat @click="showResources">Ресурсы</v-btn>
 					<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
 					<v-btn flat @click="showTransfers">Приобритенные ресурсы</v-btn>
+					<v-badge v-if="(hasWif)" left>
+						<span slot="badge">{{combs}}</span>
+						<span>Соты</span>
+					</v-badge>
 					<v-menu bottom left>
 						<v-btn icon color="pink" slot="activator" dark>
 							<v-icon>person</v-icon>

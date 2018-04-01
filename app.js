@@ -36,7 +36,9 @@ var app = new Vue({
 			resourceDialog: false,
 			resourceDetail: {},
 			
-			hasWif: false,
+			hasWif: window.wif,
+			
+			combs: localStorage && localStorage.combs ? localStorage.combs : '',
 
 			transfersHeaders: [
 				{ text: 'Дата и время приобритения', value: 'time' },
@@ -120,6 +122,8 @@ var app = new Vue({
 									localStorage.username = username;
 									app.loginDialog = false;
 									app.hasWif = true;
+									app.combs = response[0].balance.substring(0, response[0].balance.length - 10);
+									localStorage.combs = app.combs;
 									if (callbackAuth) callbackAuth();
 								} else if (err) console.error(err);
 							});
@@ -185,6 +189,8 @@ var app = new Vue({
 							//console.log('transfer', result);
 							app.resourceDialog = false;
 							swal({title: 'Вы купили этот ресурс!',type: 'success' });
+							localStorage.combs = localStorage.combs - app.resourceDetail.combs;
+							app.combs = app.combs - app.resourceDetail.combs;
 						}
 						else console.error(err);
 					});
