@@ -197,9 +197,9 @@ var app = new Vue({
 						let operationsCount = 0;
 						transactions.forEach(function(transaction) {
 							if (transaction[1].op[0] == 'transfer' && transaction[1].op[1].memo) {
-								operationsCount++;
 								let metaData = JSON.parse(transaction[1].op[1].memo);
 								if (metaData && metaData.combs) {
+									operationsCount++;
 									app.transfersData.push({
 										value: false,
 										time: transaction[1].timestamp,
@@ -213,12 +213,15 @@ var app = new Vue({
 								}
 							}
 						});
-						if (operationsCount == 0) swal({title: 'Error', type: 'error', text: `Not have transfers operations!`});
+						if (operationsCount == 0) swal({title: 'Error', type: 'error', text: `Вы пока что не приобритали ресурсов!`});
 					}
 					else {
 						swal({title: 'Error', type: 'error', text: err});
 					}
 				});
 			},
+			showLogin: function() {
+				app.loginDialog = true;
+			}
 		},
 });

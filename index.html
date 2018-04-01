@@ -18,8 +18,11 @@
 					<v-btn flat @click="showprojects">Проекты</v-btn>
 					<v-btn flat @click="showResources">Ресурсы</v-btn>
 					<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
-					<v-btn flat @click="showTransfers">Трансферы</v-btn>
-					<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>
+					<v-btn flat @click="showTransfers">Приобритенные ресурсы</v-btn>
+					<v-btn flat @click="registerdialog=true">Регистрация</v-btn>
+					<v-btn flat @click="showLogin">Авторизация</v-btn>
+					<v-btn flat @click="registerdialog=true">Выход</v-btn>
+					<!--<v-btn icon color="pink" @click="registerdialog=true"> <v-icon>person</v-icon></v-btn>-->
 				</v-toolbar>	
 				<v-content color="white" style="margin-top:60px">
 					
@@ -175,7 +178,7 @@
 							</v-card-text>
 							<v-card-actions>
 								<v-btn color="success" @click="submit" :disabled="!valid">Войти</v-btn>
-								<v-btn color="error" @click="newResourceDialog=false">Закрыть</v-btn>
+								<v-btn color="error" @click="loginDialog=false">Закрыть</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
