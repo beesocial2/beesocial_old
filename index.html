@@ -1,265 +1,230 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<title>BeeSocial</title>
-		<meta name="mobile-web-app-capable" content="yes">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-		<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-		<link href="./custom.css" rel="stylesheet">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+		<link rel="stylesheet" href="custom.css?201805201945" />
 	</head>
 	<body>
-		<div id="app">
-			<v-app light style="background-color: rgba(255,255,255,1);" >
-				<v-toolbar fixed color="white" >
-					<v-toolbar-title><img src="./black.png" width="30px" height="30px"> BeeSocial</v-toolbar-title>
-					<v-spacer></v-spacer>
-					<v-btn flat @click="page = 'about'">О нас</v-btn>
-					<v-btn flat @click="showprojects">Проекты</v-btn>
-					<v-btn flat @click="showResources">Ресурсы</v-btn>
-					<v-btn flat @click="page = 'sponsors'">Спонсоры</v-btn>
-					<v-btn flat @click="showTransfers">Приобритенные ресурсы</v-btn>
-					<v-badge v-if="(hasWif)" left>
-						<span slot="badge">{{combs}}</span>
-						<span>Соты</span>
-					</v-badge>
-					<v-menu bottom left>
-						<v-btn icon color="pink" slot="activator" dark>
-							<v-icon>person</v-icon>
-						</v-btn>
-						<v-list>
-							<v-list-tile @click="showLogin" v-if="( ! hasWif)">
-								<v-list-tile-title>Авторизация</v-list-tile-title>
-							</v-list-tile>
-							<v-list-tile @click="registerdialog=true" v-if="( ! hasWif)">
-								<v-list-tile-title>Регистрация</v-list-tile-title>
-							</v-list-tile>
-							<v-list-tile @click="logout" v-if="(hasWif)">
-								<v-list-tile-title>Выход</v-list-tile-title>
-							</v-list-tile>
-						</v-list>
-					</v-menu>
-				</v-toolbar>	
-				<v-content color="white" style="margin-top:60px">
-					
-					<v-dialog v-model="registerdialog" max-width="500px">
-						<v-card>
-							<v-card-title>
-								<h3>Регистрация пользователя</h3>
-							</v-card-title>
-							<v-card-text>
-								<v-form v-model="valid" ref="form" lazy-validation>
-									<v-select
-									  label="Тип аккаунта"
-									  v-model="select"
-									  :items="items"
-									  :rules="[v => !!v || 'Item is required']"
-									  required
-									></v-select>
-									<v-text-field
-									  label="Эл. почта"
-									  v-model="email"
-									  :rules="emailRules"
-									  required
-									></v-text-field>
-									<v-text-field
-										label="Логин"
-										v-model="login"
-										:counter="16"
-										required
-									></v-text-field>
-									<v-text-field
-										label="Пароль"
-										v-model="password"
-										required
-									></v-text-field>
-								</v-form>
-							</v-card-text>
-							<v-card-actions>
-								<v-btn color="success" @click="submit"  :disabled="!valid" >Зарегистрироваться</v-btn>
-								<v-btn color="error" @click="registerdialog=false">Закрыть</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
-
-					<v-container v-if="page=='about'" >
-						<v-layout row >
-							<v-flex xs6>
-								<h1>Кто мы такие?</h1>
-								<p><strong>Bee Social</strong> – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
+		<header>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+				<a class="navbar-brand" href="#">
+					<!--<img src="graphics/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">-->
+					BeeSocial
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item"><a class="nav-link" href="#"><span class="icon-user-tie"></span> О нас</a></li>
+						<li><a class="nav-link" href="#"><span class="icon-user-tie"></span> Проекты</a></li>
+						<li><a class="nav-link" href="#resources"><span class="icon-user-tie"></span> Ресурсы</a></li>
+						<li><a class="nav-link" href="#"><span class="icon-user-tie"></span> Спонсоры</a></li>
+						<li><a class="nav-link" href="#purchased-resources"><span class="icon-user-tie"></span> Приобритенные ресурсы</a></li>
+					</ul>
+					<span class="navbar-text" id="balance">
+					</span>
+					<div class="form-inline my-2 my-lg-0" id="navbar-right">
+						<li class="nav-item d-flex align-items-center" id="li-log">
+							<button class="btn btn-primary my-2 my-sm-0" id="logout"><span class="icon-exit"></span> Выйти</button>
+							<button class="btn btn-primary btn-success my-2 my-sm-0" id="login"><span class="icon-exit"></span> Войти</button>
+						</li>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<article>
+			<main role="main" class="container-fluid">
+				<br>
+				<div class="row" id="main-page">
+					<div class="col-8">
+						<div class="row">
+							<div class="col">
+								<h5>Кто мы такие?</h5>
+								<p>Bee Social – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
 								<p>Платформа Bee Social объединяет тех, кто хочет поделиться своими ресурсами, и тех, кому нужны эти ресурсы.</p>
 								<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - токены.</p>
-							</v-flex>
-							<v-flex xs6>
-								<img src="./black.png" alt="" width="600px" height="600px">
-							</v-flex>
-						</v-layout>
-					</v-container>
-
-					<v-container v-if="page=='projects'" >
-						<v-layout warp>
-							<v-flex md3 v-for="proj in projlist" :key="proj.id">
-								<v-card>
-									<v-card-title primary-title>
-										<h3> {{ proj.title }}</h3>
-									</v-card-title>
-									<v-card-text>
-										{{ proj.body }}
-									</v-card-text>
-									<v-card-actions>
-										<v-btn flat color="orange" > Сделать что-то </v-btn>
-									</v-card-actions> 
-								</v-card>
-							</v-flex>
-						</v-layout>
-					</v-container>
-					
-					<v-container v-if="page=='resources'" >
-						<v-layout warp>
-							<v-btn color="success" @click="newResourceDialog=true">Создать ресурс</v-btn>
-							<v-flex md3 v-for="proj in resourceList" :key="proj.id">
-								<v-card>
-									<v-card-title primary-title>
-										<h3> {{ proj.title }}</h3>
-									</v-card-title>
-									<v-card-text>
-										{{ proj.description }}
-									</v-card-text>
-									<v-card-actions>
-										<v-btn flat color="orange" @click="getResourceDetail(proj.author, proj.permlink)">Подробнее...</v-btn>
-									</v-card-actions> 
-								</v-card>
-							</v-flex>
-						</v-layout>
-					</v-container>
-					
-					<v-container v-if="page=='transfers'" >
-						<v-layout warp>
-							<v-data-table
-								:headers="transfersHeaders"
-								:items="transfersData"
-								hide-actions
-								class="elevation-1"
-							>
-								<template slot="items" slot-scope="props">
-									<td>{{ props.item.time }}</td>
-									<td>{{ props.item.title }}</td>
-									<td>{{ props.item.author }}</td>
-									<td>{{ props.item.combs }}</td>
-									<td>{{ props.item.howGet }}</td>
-									<td>{{ props.item.contacts }}</td>
-									<td>{{ props.item.description }}</td>
-								</template>
-							</v-data-table>
-						</v-layout>
-					</v-container>
-					
-					<v-dialog v-model="resourceDialog" max-width="500px">
-						<v-card>
-							<v-card-title>
-								<h3>Подробная информация о ресурсе</h3>
-							</v-card-title>
-							<v-card-text>
-								<h4>Название: {{ resourceDetail.title }}</h4>
-								<h4>Описание: {{ resourceDetail.description }}</h4>
-								<h4>Как получить ресурс: {{ resourceDetail.howGet }}</h4>
-								<h4>Контакты: {{ resourceDetail.contacts }}</h4>
-								<h4>Кол-во сот: {{ resourceDetail.combs }}</h4>
-							</v-card-text>
-							<v-card-actions>
-								<v-btn color="success" @click="transfer()">Приобрести</v-btn>
-								<v-btn color="error" @click="resourceDialog=false">Закрыть</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
-					
-					<v-dialog v-model="loginDialog" max-width="500px">
-						<v-card>
-							<v-card-title>
-								<h3>Вход в систему</h3>
-							</v-card-title>
-							<v-card-text>
-								<v-form v-model="valid" ref="form" lazy-validation>
-									<v-text-field
-										label="Логин"
-										v-model="login"
-										required
-									></v-text-field>
-									<v-text-field
-									  label="Пароль"
-									  v-model="password"
-									  required
-									></v-text-field>
-								</v-form>
-							</v-card-text>
-							<v-card-actions>
-								<v-btn color="success" @click="submit" :disabled="!valid">Войти</v-btn>
-								<v-btn color="error" @click="loginDialog=false">Закрыть</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
-					
-					<v-dialog v-model="newResourceDialog" max-width="500px">
-						<v-card>
-							<v-card-title>
-								<h3>Создание ресурса</h3>
-							</v-card-title>
-							<v-card-text>
-								<v-form v-model="valid" ref="form" lazy-validation>
-									<v-text-field
-										label="Название"
-										v-model="title"
-										required
-									></v-text-field>
-									<v-text-field
-									  label="Описание"
-									  v-model="description"
-									  multi-line
-									  required
-									></v-text-field>
-									<v-text-field
-										label="Как получить ресурс"
-										v-model="howGet"
-										required
-									></v-text-field>
-									<v-text-field
-										label="Контакты"
-										v-model="contacts"
-										required
-									></v-text-field>
-									<v-text-field
-										label="Кол-во сот"
-										v-model="combs"
-										required
-										suffix="СОТЫ"
-										type="number"
-									></v-text-field>
-								</v-form>
-							</v-card-text>
-							<v-card-actions>
-								<v-btn color="success" @click="submit"  :disabled="!valid" >Создать ресурс</v-btn>
-								<v-btn color="error" @click="newResourceDialog=false">Закрыть</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
-
-				</v-content>
-			</v-app>
-		</div>
-	<div class="lding">
-		<div class="lds-css ng-scope">
-			<div class="lds-cube">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-4">
+						<img class="img-fluid" src="https://beesocial2.github.io/beesocial/black.png">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<div id="purchased-resources-page">
+							<table class="table table-bordered table-hover table-sm" id="purchased-resources">
+								<thead>
+									<tr class="table-primary">
+										<th scope="col">Дата и время приобритения</th>
+										<th scope="col">Название</th>
+										<th scope="col">Спонсор</th>
+										<th scope="col">Соты</th>
+										<th scope="col">Как получить</th>
+										<th scope="col">Контакты</th>
+										<th scope="col">Описание</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div id="resources-page">
+							<button type="button" class="btn btn-success" id="create-resource-btn">Создать ресурс</button>
+							<br>
+							<br>
+							<div id="resources">
+							</div>
+						</div>
+						<div id="witnesses-page">
+						</div>
+					</div>
+				</div>
+				<br>
+			</main>
+		</article>
+		<footer class="footer">
+			<div class="container-fluid">
+				<span class="text-muted">BeeSocial @ 2018</span>
+			</div>
+		</footer>
+		<div class="col-sm-4" id="resource-item">
+			<div class="card">
+				<!--<img class="card-img-top" src="..." alt="Card image cap">-->
+				<div class="card-body">
+					<h5 class="card-title">Resource title</h5>
+					<p class="card-text">Resource description.</p>
+					<button class="btn btn-primary">Подробнее...</button>
+				</div>
 			</div>
 		</div>
-	</div>
-	<script src="https://unpkg.com/vue/dist/vue.js"></script>
-	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
-	<script src="https://unpkg.com/golos-js@0.6.1/dist/golos.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.13.1/dist/sweetalert2.all.min.js"></script>
-	<script src="./app.js"></script>
+		<div class="modal" id="create-resource-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Создание ресурса</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="title">Название:</label>
+								<input type="text" class="form-control" id="title" name="title" required="">
+							</div>
+							<div class="form-group">
+								<label for="description">Описание:</label>
+								<textarea class="form-control" id="description" name="description" rows="5" required=""></textarea>
+							</div>
+							<div class="form-group">
+								<label for="how-get">Как получить ресурс:</label>
+								<input type="text" class="form-control" id="how-get" name="howGet" required="">
+							</div>
+							<div class="form-group">
+								<label for="contacts">Контакты:</label>
+								<input type="text" class="form-control" id="contacts" name="contacts" required="">
+							</div>
+							<div class="form-group">
+								<label for="combs">Кол-во сот:</label>
+								<input type="number" class="form-control" id="combs" name="combs" min="1" required="">
+							</div>
+							<button type="submit" class="btn btn-success">Создать ресурс</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" id="resource-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Подробная информация о ресурсе</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h3>Название: <span class="badge badge-secondary" id="resource-title">resource title</span></h3>
+						<h3>Описание: <span class="badge badge-secondary" id="resource-description">resource description</span></h3>
+						<h3>Как получить ресурс: <span class="badge badge-secondary" id="resource-how-get">resource how get</span></h3>
+						<h3>Контакты: <span class="badge badge-secondary" id="resource-contacts">resource contacts</span></h3>
+						<h3>Кол-во сот: <span class="badge badge-secondary" id="resource-combs">resource combs</span></h3>
+						<button type="submit" class="btn btn-success" id="buy-resource-btn">Приобрести ресурс</button>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" tabindex="-1" role="dialog" id="auth" aria-hidden="false">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Что бы продолжить, вы должны авторизоваться!</h5>
+						<button type="button" id="change-node-close" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<h5>Пожалуйста введите ваш логин и пароль</h5>
+						<form id="form-login-pass" class="d-flex flex-column">
+							<div class="form-group">
+								<label for="input-user">Имя пользователя</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">@</div>
+									</div>
+									<input type="text" class="form-control" id="input-user" placeholder="Username" required="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="input-pass">Пароль</label>
+								<input id="input-pass" type="password" class="form-control" placeholder="Master password" aria-label="Password" aria-describedby="Password" required="">
+							</div>
+							<div class="form-group form-check align-self-center">
+								<input id="logged" class="form-check-input" type="checkbox" value="">
+								<label class="form-check-label">Запомнить</label>
+							</div>
+							<button type="submit" id="log-pass-log" class="btn btn-success align-self-center"><span class="icon-enter"></span> Войти</button>
+						</form>
+						<div class="d-flex flex-column" style="width:100%">
+							<div>
+								<hr class="bg-light">
+								<div class="text-center">
+									ИЛИ
+								</div>
+								<hr class="bg-light">
+							</div>
+							<a class="align-self-center" target="_blank" href="https://golos.io/create_account">
+								<button type="button" class="btn btn-primary" aria-label="" style="display: inline-block; background-color: #297dce;"><span class="icon-clipboard"></span> Зарегистрироваться</button>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="lding">
+			<div class="lds-css ng-scope">
+				<div class="lds-cube">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/golos-js@0.6.3/dist/golos.min.js"></script>
+		<script src="https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.13.1/dist/sweetalert2.all.min.js"></script>
+		<script src="app.js?201805201945"></script>
 	</body>
 </html>

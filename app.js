@@ -1,17 +1,27 @@
-golos.config.set('websocket', 'wss://ws.testnet.golos.io');
-golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+//golos.config.set('websocket', 'wss://ws.testnet.golos.io');
+//golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 
 localStorage && localStorage.wif ? window.wif = JSON.parse(localStorage.wif) : window.wif = {};
 localStorage && localStorage.username ? window.username = localStorage.username : window.username = '';
+// combs: localStorage && localStorage.balance ? localStorage.balance : '',
 
+let $mainPage = document.querySelector('#main-page');
+let $purchasedResourcesPage = document.querySelector('#purchased-resources-page');
+let $purchasedResourcesTbody = document.querySelector('#purchased-resources tbody');
+let $resourcesPage = document.querySelector('#resources-page');
+let $resources = $resourcesPage.querySelector('#resources');
+let modalAuth = new Modal(document.getElementById('auth'));
+let $createResourceModal = document.getElementById('create-resource-modal');
+let createResourceModal = new Modal($createResourceModal);
+let $resourceModal = document.getElementById('resource-modal');
+let resourceModal = new Modal($resourceModal);
+let balance = 0;
+let $balance = document.querySelector('#balance');
+let $login = document.getElementById('login');
+let $logout = document.getElementById('logout');
+let $resourceItem = document.querySelector('#resource-item');
+let resourceItemSelected;
 let callbackAuth;
-let auth = function(callback) {
-	if (wif && username) callback();
-	else {
-		app.loginDialog = true;
-		callbackAuth = callback;
-	}
-};
 
 let $loader = document.getElementsByClassName('lding')[0];
 let loadingShow = function() {
@@ -23,223 +33,315 @@ let loadingHide = function() {
 
 let mainTag = 'beesocial';
 
-var app = new Vue({
-		el: '#app',
-		data: {
-			page: 'about',
-			registered: false,
-			loginDialog: false,
-			registerdialog: false,
-			newResourceDialog: false,
-			projlist: [],
-			resourceList: [],
-			resourceDialog: false,
-			resourceDetail: {},
-			
-			hasWif: username,
-			
-			combs: localStorage && localStorage.combs ? localStorage.combs : '',
-
-			transfersHeaders: [
-				{ text: 'Дата и время приобритения', value: 'time' },
-				{ text: 'Название', value: 'title' },
-				{ text: 'Спонсор', value: 'author' },
-				{ text: 'Соты', value: 'combs' },
-				{ text: 'Как получить', value: 'howGet' },
-				{ text: 'Контакты', value: 'contacts' },
-				{ text: 'Описание', value: 'description' }
-			],
-			transfersData: [],
-			
-			valid: false,
-			
-			select: null,
-			items: [
-				'НКО',
-				'Спонсор',
-				'Волонтёр'
-			],
-			email: '',
-			emailRules: [
-				v => !!v || 'Эл.почта необходимо ввести',
-				v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Эл.почта необходимо ввести'
-			],
-			login: '',
-			password: '',
-			title: '',
-			description: '',
-			howGet: '',
-			contacts: '',
-			combs: '',
-		},
-		
-		methods: {			
-			showprojects: function(event){
-				this.page = 'projects';
-				console.log('переход на проекты');
-				
-			},
-			showResources: function(event){
-				this.page = 'resources';
-				app.resourceList = [];
-				var query = {
-					select_tags: [mainTag],
-					limit: 100,
-				};
-				loadingShow();
-				golos.api.getDiscussionsByCreated(query, function(err, result) {
-					loadingHide();
-					//console.log(err, result);
-					if ( ! err) {
-						result.forEach(function(item) {
-							let jsonMetadata = JSON.parse(item.json_metadata);
-							app.resourceList.push({
-								author: item.author,
-								permlink: item.permlink,
-								title: jsonMetadata.title,
-								description: jsonMetadata.description,
-							});
-						});
-					}
-					else console.error(err);
-				});
-			},
-			submit: function(event) {
-				if (app.loginDialog) {
-					loadingShow();
-					const roles = ['posting', 'active'];
-					wif = golos.auth.getPrivateKeys(this.login, this.password, roles);
-					golos.api.getAccounts([this.login], function(err, response) {
-						loadingHide();
-						if (response && response[0] && response[0].posting.key_auths[0][0] == wif.postingPubkey) {
-							localStorage.wif = JSON.stringify(wif);
-							loadingShow();
-							let resultWifToPublic = golos.auth.wifToPublic(wif['posting']);
-							let result = golos.api.getKeyReferences([resultWifToPublic], function(err, result) {
-								loadingHide();
-								if (result && result[0]) {
-									username = result[0][0];
-									localStorage.username = username;
-									app.loginDialog = false;
-									app.hasWif = true;
-									app.combs = response[0].balance.substring(0, response[0].balance.length - 10);
-									localStorage.combs = app.combs;
-									if (callbackAuth) callbackAuth();
-								} else if (err) console.error(err);
-							});
-						} else alert('Неверный логин или пароль!');
-					});
-				}
-				else if (app.newResourceDialog) {
-					let parentAuthor = '';
-					let parentPermlink = mainTag;
-					let permlink = Date.now().toString();
-					let title = this.title;
-					let body = '<h1><a href="">Этот пост был создан на платформе BeeSocial</a></h1>' + this.description;
-					let jsonMetadata = {
-						title: this.title,
-						description: this.description,
-						howGet: this.howGet,
-						contacts: this.contacts,
-						combs: this.combs
-					};
-					auth(function() {
-						loadingShow();
-						golos.broadcast.comment(wif['posting'], parentAuthor, parentPermlink, username, permlink, title, body, jsonMetadata, function (err, result) {
-							loadingHide();
-							//console.log(err, result);
-							if ( ! err) {
-								//console.log('post: ', result);
-								//window.location.hash = username + '/' + str;
-								app.newResourceDialog = false;
-								app.showResources();
-							} else console.error(err);
-						});
-					});
-				}
-			},
-			getResourceDetail: function(author, permlink) {
-				loadingShow();
-				golos.api.getContent(author, permlink, function(err, item) {
-					loadingHide();
-					//console.log(err, item);
-					if ( ! err) {
-						let jsonMetadata = JSON.parse(item.json_metadata);
-						app.resourceDetail = {
-							author: item.author,
-							permlink: item.permlink,
-							title: jsonMetadata.title,
-							description: jsonMetadata.description,
-							howGet: jsonMetadata.howGet,
-							contacts: jsonMetadata.contacts,
-							combs: jsonMetadata.combs,
-						};
-						app.resourceDialog = true;
-					}
-					else console.error(err);
-				});
-			},
-			transfer: function() {
-				auth(function() {
-					loadingShow();
-					golos.broadcast.transfer(wif['active'], username, app.resourceDetail.author, `${app.resourceDetail.combs}.000 GOLOS`, JSON.stringify(app.resourceDetail), function(err, result) {
-						loadingHide();
-						//console.log(err, result);
-						if ( ! err) {
-							//console.log('transfer', result);
-							app.resourceDialog = false;
-							swal({title: 'Вы купили этот ресурс!',type: 'success' });
-							localStorage.combs = localStorage.combs - app.resourceDetail.combs;
-							app.combs = app.combs - app.resourceDetail.combs;
-						}
-						else console.error(err);
-					});
-				});
-			},
-			showTransfers: function(event){
-				this.page = 'transfers';
-				auth(function() {
-					loadingShow();
-					golos.api.getAccountHistory(username, -1, 99, function(err, transactions) {
-						loadingHide();
-						if (transactions.length > 0) {
-							transactions.reverse();
-							let operationsCount = 0;
-							transactions.forEach(function(transaction) {
-								if (transaction[1].op[0] == 'transfer' && transaction[1].op[1].memo) {
-									let metaData = JSON.parse(transaction[1].op[1].memo);
-									if (metaData && metaData.combs) {
-										operationsCount++;
-										app.transfersData.push({
-											value: false,
-											time: transaction[1].timestamp,
-											title: metaData.title,
-											author: metaData.author,
-											combs: metaData.combs,
-											howGet: metaData.howGet,
-											contacts: metaData.contacts,
-											description: metaData.description
-										});
-									}
-								}
-							});
-							if (operationsCount == 0) swal({title: 'Error', type: 'error', text: `Вы пока что не приобритали ресурсов!`});
-						}
-						else {
-							swal({title: 'Error', type: 'error', text: err});
-						}
-					});
-				});
-			},
-			showLogin: function() {
-				app.loginDialog = true;
-			},
-			logout: function() {
-				wif = null;
-				username = null;
-				delete localStorage.wif;
-				delete localStorage.username;
-				app.hasWif = false;
-			}
-		},
+document.getElementById('form-login-pass').addEventListener('submit', async(e) => {
+	e.preventDefault();
+	let log = document.getElementById('logged').checked,
+		user = document.getElementById('input-user').value,
+		pass = document.getElementById('input-pass').value;
+	let response = await golos.api.getAccounts([user]);
+	if (response[0]) {
+		const roles = ['posting', 'active'];
+		let keys = await golos.auth.getPrivateKeys(user, pass, roles);
+		if (response[0].posting.key_auths[0][0] == keys.postingPubkey) {
+			username = user;
+			wif = keys;
+			$balance.innerHTML = parseInt(response[0].balance) + ' Combs';
+			log ? localStorage.username = username : '';
+			log ? localStorage.wif = JSON.stringify(wif) : {};
+			log ? localStorage.balance = parseInt(response[0].balance) : '';
+			$login.style.display = 'none';
+			$logout.style.display = 'inline-block';
+			modalAuth.hide();
+			if (callbackAuth) callbackAuth();
+		}
+		else {
+			swal({
+				type: 'error',
+				title: 'Error!',
+				text: 'Password incorrect'
+			});
+		}
+	}
+	else {
+		swal({
+			type: 'error',
+			title: 'Error!',
+			text: 'Username incorrect'
+		});
+	}
 });
+
+let auth = function(callback) {
+	if (wif && username) callback();
+	else {
+		modalAuth.show();
+		callbackAuth = callback;
+	}
+};
+
+//
+$login.addEventListener('click', function() {
+	modalAuth.show();
+});
+
+$logout.addEventListener('click', function() {
+	delete localStorage.wif;
+	delete localStorage.username;
+	delete localStorage.balance;
+	window.username = '';
+	window.wif = {};
+	window.balance = 0;
+	$balance.innerHTML = '';
+	$logout.style.display = 'none';
+	$login.style.display = 'inline-block';
+	swal({
+		position: 'top-end',
+		type: 'success',
+		title: 'You are logged out',
+		showConfirmButton: false,
+		toast: true,
+		timer: 1500
+	});
+});
+
+document.getElementById('create-resource-btn').addEventListener('click', function() {
+	createResourceModal.show();
+});
+
+let $createResourceModalForm = $createResourceModal.querySelector('form');
+$createResourceModalForm.addEventListener('submit', function(e) {
+	e.preventDefault();
+	let parentAuthor = '';
+	let parentPermlink = mainTag;
+	let title = this.title.value;
+	let permlink = urlLit(title, 0);
+	//let body = '<h1><a href="">Этот пост был создан на платформе BeeSocial</a></h1>' + this.description;
+	let body = `<h2>Title: ${title}</h2><h2>Description: ${this.description.value}</h2><h2>How get: ${this.howGet.value}</h2><h2>Contacts: ${this.contacts.value}</h2><h2>Combs: ${this.combs.value}</h2>`;
+	let jsonMetadata = {
+		app: 'beesocial/0.1',
+		canonical: 'https://beesocial.in/#resources/' + permlink,
+		app_account: 'beesocial',
+		data: {
+			title: title,
+			description: this.description.value,
+			howGet: this.howGet.value,
+			contacts: this.contacts.value,
+			combs: this.combs.value,
+			author: username,
+			permlink: permlink
+		},
+		tags: ['resources']
+	};
+	auth(function() {
+		loadingShow();
+		golos.broadcast.comment(wif['posting'], parentAuthor, parentPermlink, username, permlink, title, body, jsonMetadata, function (err, result) {
+			loadingHide();
+			if ( ! err) {
+				$createResourceModalForm.reset();
+				createResourceModal.hide();
+				window.location.hash = '#resources/' + permlink;
+			} else console.error(err);
+		});
+	});
+});
+
+if (localStorage.wif) {
+	balance = parseInt(localStorage.balance);
+	$balance.innerHTML = balance + ' Combs';
+	$login.style.display = 'none';
+	$logout.style.display = 'inline-block';
+	username = localStorage.username;
+}
+
+let getResources = function() {
+	loadingShow();
+	$resources.innerHTML = '';
+	var query = {
+		select_tags: [mainTag],
+		limit: 100,
+	};
+	golos.api.getDiscussionsByCreated(query, function(err, result) {
+		loadingHide();
+		//console.log(err, result);
+		if ( ! err) {
+			result.forEach(function(item) {
+				item.jsonMetadata = JSON.parse(item.json_metadata);
+				if (item.jsonMetadata.app == 'beesocial/0.1') {
+					console.log(item);
+					let $newItem = $resourceItem.cloneNode(true);
+					$newItem.querySelector('.card-title').innerHTML = item.jsonMetadata.data.title;
+					$newItem.querySelector('.card-text').innerHTML = item.jsonMetadata.data.description;
+					$newItem.setAttribute('data-author', item.author);
+					$newItem.setAttribute('data-permlink', item.permlink);
+					$newItem.querySelector('button').addEventListener('click', function() {
+						//resourceItemSelected = {author: item.author, permlink: item.permlink};
+						resourceItemSelected = item;
+						$resourceModal.querySelector('#resource-title').innerHTML = item.jsonMetadata.data.title;
+						$resourceModal.querySelector('#resource-description').innerHTML = item.jsonMetadata.data.description;
+						$resourceModal.querySelector('#resource-how-get').innerHTML = item.jsonMetadata.data.howGet;
+						$resourceModal.querySelector('#resource-contacts').innerHTML = item.jsonMetadata.data.contacts;
+						$resourceModal.querySelector('#resource-combs').innerHTML = item.jsonMetadata.data.combs;
+						resourceModal.show();
+					});
+					$newItem.style.display = 'block';
+					$resources.appendChild($newItem);
+				}
+			});
+		}
+		else console.error(err);
+	});
+};
+
+$resourceModal.querySelector('#buy-resource-btn').addEventListener('click', function() {
+	loadingShow();
+	auth(function() {
+		golos.broadcast.transfer(wif['active'], username, resourceItemSelected.author, `${resourceItemSelected.jsonMetadata.data.combs}.000 GOLOS`, JSON.stringify(resourceItemSelected.jsonMetadata), function(err, result) {
+			loadingHide();
+			console.log(err, result);
+			if ( ! err) {
+				resourceModal.hide();
+				swal({ title: 'You buyed this resource!', type: 'success' });
+				localStorage.balance = localStorage.balance - resourceItemSelected.jsonMetadata.data.combs;
+				balance = balance - resourceItemSelected.jsonMetadata.data.combs;
+				$balance.innerHTML = balance + ' Combs';
+			}
+			else {
+				swal({ type: 'error', title: err.message });
+				console.error(err);
+			}
+		});
+	});
+});
+
+/*let submit = function(event) {
+	if (app.loginDialog) {
+		loadingShow();
+		const roles = ['posting', 'active'];
+		wif = golos.auth.getPrivateKeys(this.login, this.password, roles);
+		golos.api.getAccounts([this.login], function(err, response) {
+			loadingHide();
+			if (response && response[0] && response[0].posting.key_auths[0][0] == wif.postingPubkey) {
+				localStorage.wif = JSON.stringify(wif);
+				loadingShow();
+				let resultWifToPublic = golos.auth.wifToPublic(wif['posting']);
+				let result = golos.api.getKeyReferences([resultWifToPublic], function(err, result) {
+					loadingHide();
+					if (result && result[0]) {
+						username = result[0][0];
+						localStorage.username = username;
+						app.loginDialog = false;
+						app.hasWif = true;
+						app.combs = response[0].balance.substring(0, response[0].balance.length - 10);
+						localStorage.combs = app.combs;
+						if (callbackAuth) callbackAuth();
+					} else if (err) console.error(err);
+				});
+			} else alert('Неверный логин или пароль!');
+		});
+	}
+};*/
+
+let showPurchasedResources = function(event) {
+	$purchasedResourcesTbody.innerHTML = '';
+	loadingShow();
+	auth(function() {
+		golos.api.getAccountHistory(username, -1, 99, function(err, transactions) {
+			loadingHide();
+			if (transactions.length > 0) {
+				transactions.reverse();
+				let operationsCount = 0;
+				transactions.forEach(function(transaction) {
+					if (transaction[1].op[0] == 'transfer' && transaction[1].op[1].memo) {
+						let metaData;
+						try {
+							metaData = JSON.parse(transaction[1].op[1].memo);
+						}
+						catch (e) {
+						}
+						if (metaData && metaData.app == 'beesocial/0.1') {
+							operationsCount++;
+							let $newRow = $purchasedResourcesTbody.insertRow();
+							$newRow.innerHTML = `<tr>
+													<td>${transaction[1].timestamp}</td>
+													<td>${metaData.data.title}</td>
+													<td>${metaData.data.author}</td>
+													<td>${metaData.data.combs}</td>
+													<td>${metaData.data.howGet}</td>
+													<td>${metaData.data.contacts}</td>
+													<td>${metaData.data.description}</td>
+												</tr>`;
+						}
+					}
+				});
+				if (operationsCount == 0) swal({title: 'Error', type: 'error', text: 'You have not yet acquired resources!'});
+			}
+			else {
+				swal({title: 'Error', type: 'error', text: err});
+			}
+		});
+	});
+};
+
+/*let getResourceDetail = function(author, permlink) {
+	loadingShow();
+	golos.api.getContent(author, permlink, function(err, item) {
+		loadingHide();
+		//console.log(err, item);
+		if ( ! err) {
+			let jsonMetadata = JSON.parse(item.json_metadata);
+			app.resourceDetail = {
+				author: item.author,
+				permlink: item.permlink,
+				title: jsonMetadata.title,
+				description: jsonMetadata.description,
+				howGet: jsonMetadata.howGet,
+				contacts: jsonMetadata.contacts,
+				combs: jsonMetadata.combs,
+			};
+		}
+		else console.error(err);
+	});
+};*/
+
+let urlLit = function(w, v) {
+	var tr = 'a b v g d e ["zh","j"] z i y k l m n o p r s t u f h c ch sh ["shh","shch"] ~ y ~ e yu ya ~ ["jo","e"]'.split(' ');
+	var ww = '';
+	w = w.toLowerCase();
+	for (i = 0; i < w.length; ++i) {
+		cc = w.charCodeAt(i);
+		ch = (cc >= 1072 ? tr[cc - 1072] : w[i]);
+		if (ch.length < 3) ww += ch;
+		else ww += eval(ch)[v];
+	}
+	return (ww.replace(/[^a-zA-Z0-9\-]/g, '-').replace(/[-]{2,}/gim, '-').replace(/^\-+/g, '').replace(/\-+$/g, ''));
+};
+
+window.addEventListener('hashchange', function() {
+	let hash = window.location.hash.substring(1);
+	if (hash) {
+		let params = hash.split('/');
+			console.log(params);
+		if (params[0]) {
+			switch (params[0]) {
+				case 'resources': {
+					$mainPage.style.display = 'none';
+					$purchasedResourcesPage.style.display = 'none';
+					$resourcesPage.style.display = 'block';
+					getResources();
+				}; break;
+				case 'purchased-resources': {
+					$mainPage.style.display = 'none';
+					$resourcesPage.style.display = 'none';
+					$purchasedResourcesPage.style.display = 'block';
+					showPurchasedResources();
+				}; break;
+			}
+		}
+	}
+	else {
+		$purchasedResourcesPage.style.display = 'none';
+		$mainPage.style.display = 'block';
+	}
+});
+
+window.dispatchEvent(new CustomEvent('hashchange'));
