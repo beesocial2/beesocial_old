@@ -10,6 +10,8 @@ let $purchasedResourcesPage = document.querySelector('#purchased-resources-page'
 let $purchasedResourcesTbody = document.querySelector('#purchased-resources tbody');
 let $resourcesPage = document.querySelector('#resources-page');
 let $resources = $resourcesPage.querySelector('#resources');
+let $projectsPage = document.querySelector('#projects-page');
+let $projects = $projectsPage.querySelector('#projects');
 let modalAuth = new Modal(document.getElementById('auth'));
 let $createResourceModal = document.getElementById('create-resource-modal');
 let createResourceModal = new Modal($createResourceModal);
@@ -328,6 +330,12 @@ window.addEventListener('hashchange', function() {
 					$purchasedResourcesPage.style.display = 'none';
 					$resourcesPage.style.display = 'block';
 					getResources();
+				}; break;
+				case 'projects': {
+					$mainPage.style.display = 'none';
+					$purchasedResourcesPage.style.display = 'none';
+					$resourcesPage.style.display = 'none';
+					$projectsPage.style.display = 'block';
 				}; break;
 				case 'purchased-resources': {
 					$mainPage.style.display = 'none';
