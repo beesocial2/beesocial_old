@@ -328,6 +328,7 @@ window.addEventListener('hashchange', function() {
 				case 'resources': {
 					$mainPage.style.display = 'none';
 					$purchasedResourcesPage.style.display = 'none';
+					$projectsPage.style.display = 'none';
 					$resourcesPage.style.display = 'block';
 					getResources();
 				}; break;
@@ -340,6 +341,7 @@ window.addEventListener('hashchange', function() {
 				case 'purchased-resources': {
 					$mainPage.style.display = 'none';
 					$resourcesPage.style.display = 'none';
+					$projectsPage.style.display = 'none';
 					$purchasedResourcesPage.style.display = 'block';
 					showPurchasedResources();
 				}; break;
