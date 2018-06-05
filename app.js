@@ -12,6 +12,8 @@ let $resourcesPage = document.querySelector('#resources-page');
 let $resources = $resourcesPage.querySelector('#resources');
 let $projectsPage = document.querySelector('#projects-page');
 let $projects = $projectsPage.querySelector('#projects');
+let $projectModal = document.getElementById('project-modal');
+let projectModal = new Modal($projectModal);
 let modalAuth = new Modal(document.getElementById('auth'));
 let $createResourceModal = document.getElementById('create-resource-modal');
 let createResourceModal = new Modal($createResourceModal);
@@ -256,6 +258,10 @@ $resourceModal.querySelector('#buy-resource-btn').addEventListener('click', func
 			}
 		});
 	});
+});
+
+document.querySelector('#buy-resource-btn').addEventListener('click', function() {
+	projectModal.show();
 });
 
 /*let submit = function(event) {
