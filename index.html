@@ -1,247 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>BeeSocial</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
-		<link rel="stylesheet" href="custom.css?201805201945" />
-	</head>
-	<body>
-		<header>
-			<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-				<a class="navbar-brand" href="#">
-					<!--<img src="graphics/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">-->
-					BeeSocial
-				</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+<head>
+	<title>BeeSocial</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="custom.css?201805201945" />
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand" href="#">
+				<!--<img src="graphics/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">-->
+				BeeSocial
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item"><a class="nav-link" href="#"><span class="icon-user-tie"></span> О нас</a></li>
-						<li><a class="nav-link" href="#projects"><span class="icon-user-tie"></span> Проекты</a></li>
-						<li><a class="nav-link" href="#resources"><span class="icon-user-tie"></span> Ресурсы</a></li>
-						<li><a class="nav-link" href="#"><span class="icon-user-tie"></span> Спонсоры</a></li>
-						<li><a class="nav-link" href="#purchased-resources"><span class="icon-user-tie"></span> Приобритенные ресурсы</a></li>
-					</ul>
-					<span class="navbar-text" id="balance">
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item"><a class="nav-link" href="#"><span class="icon-user-tie"></span> О нас</a></li>
+					<li><a class="nav-link" href="#projects"><span class="icon-user-tie"></span> Проекты</a></li>
+					<li><a class="nav-link" href="#resources"><span class="icon-user-tie"></span> Ресурсы</a></li>
+					<li><a class="nav-link" href="#"><span class="icon-user-tie"></span> Спонсоры</a></li>
+					<li><a class="nav-link" href="#purchased-resources"><span class="icon-user-tie"></span> Приобритенные ресурсы</a></li>
+				</ul>
+				<span class="navbar-text" id="balance">
 					</span>
-					<div class="form-inline my-2 my-lg-0" id="navbar-right">
-						<li class="nav-item d-flex align-items-center" id="li-log">
-							<button class="btn btn-primary my-2 my-sm-0" id="logout"><span class="icon-exit"></span> Выйти</button>
-							<button class="btn btn-primary btn-success my-2 my-sm-0" id="login"><span class="icon-exit"></span> Войти</button>
-						</li>
-					</div>
+				<div class="form-inline my-2 my-lg-0" id="navbar-right">
+					<li class="nav-item d-flex align-items-center" id="li-log">
+						<button class="btn btn-primary my-2 my-sm-0" id="logout"><span class="icon-exit"></span> Выйти</button>
+						<button class="btn btn-primary btn-success my-2 my-sm-0" id="login"><span class="icon-exit"></span> Войти</button>
+					</li>
 				</div>
-			</nav>
-		</header>
-		<article>
-			<main role="main" class="container-fluid">
-				<br>
-				<div class="row" id="main-page">
-					<div class="col-8">
-						<div class="row">
-							<div class="col">
-								<h5>Кто мы такие?</h5>
-								<p>Bee Social – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
-								<p>Платформа Bee Social объединяет тех, кто хочет поделиться своими ресурсами, и тех, кому нужны эти ресурсы.</p>
-								<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - токены.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-4">
-						<img class="img-fluid" src="https://beesocial2.github.io/beesocial/black.png">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col">
-						<div id="purchased-resources-page">
-							<table class="table table-bordered table-hover table-sm" id="purchased-resources">
-								<thead>
-									<tr class="table-primary">
-										<th scope="col">Дата и время приобритения</th>
-										<th scope="col">Название</th>
-										<th scope="col">Спонсор</th>
-										<th scope="col">Соты</th>
-										<th scope="col">Как получить</th>
-										<th scope="col">Контакты</th>
-										<th scope="col">Описание</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-						<div id="resources-page">
-							<button type="button" class="btn btn-success" id="create-resource-btn">Создать ресурс</button>
-							<br>
-							<br>
-							<div id="resources">
-							</div>
-						</div>
-						<div id="projects-page">
-							<div style="display: inline-flex; height: 2.5rem;">
-								<label>Геолокация</label>
-								<input type="text" class="form-control">
-								<label>Стоимость до сот</label>
-								<input type="text" class="form-control">
-								<label>Теги</label>
-								<input type="text" class="form-control">
-								<br>
-								<button type="button" class="btn btn-success" id="create-project-btn">Создать проект</button>
-							</div>
-							<label style="display: block; position: fixed; left: 50%; top: 50%; transform: translate(-50%, 50%); color: dimgrey;">Проектов не найдено</label>
-							<br>
-							<br>
-							<div id="projects">
-							</div>
-						</div>
-						<div id="witnesses-page">
-						</div>
-					</div>
-				</div>
-				<br>
-			</main>
-		</article>
-		<footer class="footer">
-			<div class="container-fluid">
-				<span class="text-muted">BeeSocial @ 2018</span>
 			</div>
-		</footer>
-		<div class="col-sm-4" id="resource-item">
-			<div class="card">
-				<!--<img class="card-img-top" src="..." alt="Card image cap">-->
-				<div class="card-body">
-					<h5 class="card-title">Resource title</h5>
-					<p class="card-text">Resource description.</p>
-					<button class="btn btn-primary">Подробнее...</button>
+		</nav>
+	</header>
+	<article>
+		<main role="main" class="container-fluid">
+			<br>
+			<div class="row" id="main-page">
+				<div class="col-8">
+					<div class="row">
+						<div class="col">
+							<h5>Кто мы такие?</h5>
+							<p>Bee Social – социальная платформа, объединяющая коммерческие компании, социальные проекты и волонтёров.</p>
+							<p>Платформа Bee Social объединяет тех, кто хочет поделиться своими ресурсами, и тех, кому нужны эти ресурсы.</p>
+							<p>Платформа, где каждый может помочь социальному проекту своими ресурсами и волонтерством в обмен на соты - токены.</p>
+						</div>
+					</div>
 				</div>
+				<div class="col-4">
+					<img class="img-fluid" src="https://beesocial2.github.io/beesocial/black.png">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id="purchased-resources-page">
+						<table class="table table-bordered table-hover table-sm" id="purchased-resources">
+							<thead>
+								<tr class="table-primary">
+									<th scope="col">Дата и время приобритения</th>
+									<th scope="col">Название</th>
+									<th scope="col">Спонсор</th>
+									<th scope="col">Соты</th>
+									<th scope="col">Как получить</th>
+									<th scope="col">Контакты</th>
+									<th scope="col">Описание</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div id="resources-page">
+						<button type="button" class="btn btn-success" id="create-resource-btn">Создать ресурс</button>
+						<br>
+						<br>
+						<div id="resources">
+						</div>
+					</div>
+					<div id="projects-page">
+						<div style="display: inline-flex; height: 2.5rem;">
+							<label>Геолокация</label>
+							<input type="text" class="form-control">
+							<label>Стоимость до сот</label>
+							<input type="text" class="form-control">
+							<label>Теги</label>
+							<input type="text" class="form-control">
+							<br>
+							<button type="button" class="btn btn-success" id="create-project-btn">Создать проект</button>
+						</div>
+						<label style="display: none; position: fixed; left: 50%; top: 50%; transform: translate(-50%, 50%); color: dimgrey;">Проектов не найдено</label>
+						<br>
+						<br>
+						<div id="projects" style="display: flex;">
+							<div class="card" style="width: 18rem; margin: .5rem;">
+								<img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_163cfa757e4%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_163cfa757e4%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+								<div class="card-body">
+									<h5 class="card-title">Название ресурса</h5>
+									<p class="card-text">Описание ресурса. Немного текста: бла-бла-бла бла-бла-бла бла-бла-бла</p>
+									<a href="#" class="btn btn-primary">Подробнее</a>
+								</div>
+							</div>
+							<div class="card" style="width: 18rem; margin: .5rem;">
+								<img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_163cfa757e4%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_163cfa757e4%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+								<div class="card-body">
+									<h5 class="card-title">Название ресурса</h5>
+									<p class="card-text">Описание ресурса. Немного текста: бла-бла-бла бла-бла-бла бла-бла-бла</p>
+									<a href="#" class="btn btn-primary">Подробнее</a>
+								</div>
+							</div>
+							<div class="card" style="width: 18rem; margin: .5rem;">
+								<img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_163cfa757e4%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_163cfa757e4%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+								<div class="card-body">
+									<h5 class="card-title">Название ресурса</h5>
+									<p class="card-text">Описание ресурса. Немного текста: бла-бла-бла бла-бла-бла бла-бла-бла</p>
+									<a href="#" class="btn btn-primary">Подробнее</a>
+								</div>
+							</div>
+							<div class="card" style="width: 18rem; margin: .5rem;">
+								<img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_163cfa757e4%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_163cfa757e4%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+								<div class="card-body">
+									<h5 class="card-title">Название ресурса</h5>
+									<p class="card-text">Описание ресурса. Немного текста: бла-бла-бла бла-бла-бла бла-бла-бла</p>
+									<a href="#" class="btn btn-primary">Подробнее</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="witnesses-page">
+					</div>
+				</div>
+			</div>
+			<br>
+		</main>
+	</article>
+	<footer class="footer">
+		<div class="container-fluid">
+			<span class="text-muted">BeeSocial @ 2018</span>
+		</div>
+	</footer>
+	<div class="col-sm-4" id="resource-item">
+		<div class="card">
+			<!--<img class="card-img-top" src="..." alt="Card image cap">-->
+			<div class="card-body">
+				<h5 class="card-title">Resource title</h5>
+				<p class="card-text">Resource description.</p>
+				<button class="btn btn-primary">Подробнее...</button>
 			</div>
 		</div>
-		<div class="modal" id="create-resource-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Создание ресурса</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	</div>
+	<div class="modal" id="create-resource-modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Создание ресурса</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-					</div>
-					<div class="modal-body">
-						<form>
-							<div class="form-group">
-								<label for="title">Название:</label>
-								<input type="text" class="form-control" id="title" name="title" required="">
-							</div>
-							<div class="form-group">
-								<label for="description">Описание:</label>
-								<textarea class="form-control" id="description" name="description" rows="5" required=""></textarea>
-							</div>
-							<div class="form-group">
-								<label for="how-get">Как получить ресурс:</label>
-								<input type="text" class="form-control" id="how-get" name="howGet" required="">
-							</div>
-							<div class="form-group">
-								<label for="contacts">Контакты:</label>
-								<input type="text" class="form-control" id="contacts" name="contacts" required="">
-							</div>
-							<div class="form-group">
-								<label for="combs">Кол-во сот:</label>
-								<input type="number" class="form-control" id="combs" name="combs" min="1" required="">
-							</div>
-							<button type="submit" class="btn btn-success">Создать ресурс</button>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-					</div>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="title">Название:</label>
+							<input type="text" class="form-control" id="title" name="title" required="">
+						</div>
+						<div class="form-group">
+							<label for="description">Описание:</label>
+							<textarea class="form-control" id="description" name="description" rows="5" required=""></textarea>
+						</div>
+						<div class="form-group">
+							<label for="how-get">Как получить ресурс:</label>
+							<input type="text" class="form-control" id="how-get" name="howGet" required="">
+						</div>
+						<div class="form-group">
+							<label for="contacts">Контакты:</label>
+							<input type="text" class="form-control" id="contacts" name="contacts" required="">
+						</div>
+						<div class="form-group">
+							<label for="combs">Кол-во сот:</label>
+							<input type="number" class="form-control" id="combs" name="combs" min="1" required="">
+						</div>
+						<button type="submit" class="btn btn-success">Создать ресурс</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="resource-modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Подробная информация о ресурсе</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	</div>
+	<div class="modal" id="resource-modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Подробная информация о ресурсе</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-					</div>
-					<div class="modal-body">
-						<h3>Название: <span class="badge badge-secondary" id="resource-title">resource title</span></h3>
-						<h3>Описание: <span class="badge badge-secondary" id="resource-description">resource description</span></h3>
-						<h3>Как получить ресурс: <span class="badge badge-secondary" id="resource-how-get">resource how get</span></h3>
-						<h3>Контакты: <span class="badge badge-secondary" id="resource-contacts">resource contacts</span></h3>
-						<h3>Кол-во сот: <span class="badge badge-secondary" id="resource-combs">resource combs</span></h3>
-						<button type="submit" class="btn btn-success" id="buy-resource-btn">Приобрести ресурс</button>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-					</div>
+				</div>
+				<div class="modal-body">
+					<h3>Название: <span class="badge badge-secondary" id="resource-title">resource title</span></h3>
+					<h3>Описание: <span class="badge badge-secondary" id="resource-description">resource description</span></h3>
+					<h3>Как получить ресурс: <span class="badge badge-secondary" id="resource-how-get">resource how get</span></h3>
+					<h3>Контакты: <span class="badge badge-secondary" id="resource-contacts">resource contacts</span></h3>
+					<h3>Кол-во сот: <span class="badge badge-secondary" id="resource-combs">resource combs</span></h3>
+					<button type="submit" class="btn btn-success" id="buy-resource-btn">Приобрести ресурс</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
 				</div>
 			</div>
 		</div>
-		<div class="modal" tabindex="-1" role="dialog" id="auth" aria-hidden="false">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Что бы продолжить, вы должны авторизоваться!</h5>
-						<button type="button" id="change-node-close" class="close" data-dismiss="modal" aria-label="Close">
+	</div>
+	<div class="modal" tabindex="-1" role="dialog" id="auth" aria-hidden="false">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Что бы продолжить, вы должны авторизоваться!</h5>
+					<button type="button" id="change-node-close" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">×</span>
 						</button>
-					</div>
-					<div class="modal-body">
-						<h5>Пожалуйста введите ваш логин и пароль</h5>
-						<form id="form-login-pass" class="d-flex flex-column">
-							<div class="form-group">
-								<label for="input-user">Имя пользователя</label>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<div class="input-group-text">@</div>
-									</div>
-									<input type="text" class="form-control" id="input-user" placeholder="Username" required="">
+				</div>
+				<div class="modal-body">
+					<h5>Пожалуйста введите ваш логин и пароль</h5>
+					<form id="form-login-pass" class="d-flex flex-column">
+						<div class="form-group">
+							<label for="input-user">Имя пользователя</label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">@</div>
 								</div>
+								<input type="text" class="form-control" id="input-user" placeholder="Username" required="">
 							</div>
-							<div class="form-group">
-								<label for="input-pass">Пароль</label>
-								<input id="input-pass" type="password" class="form-control" placeholder="Master password" aria-label="Password" aria-describedby="Password" required="">
+						</div>
+						<div class="form-group">
+							<label for="input-pass">Пароль</label>
+							<input id="input-pass" type="password" class="form-control" placeholder="Master password" aria-label="Password" aria-describedby="Password" required="">
+						</div>
+						<div class="form-group form-check align-self-center">
+							<input id="logged" class="form-check-input" type="checkbox" value="">
+							<label class="form-check-label">Запомнить</label>
+						</div>
+						<button type="submit" id="log-pass-log" class="btn btn-success align-self-center"><span class="icon-enter"></span> Войти</button>
+					</form>
+					<div class="d-flex flex-column" style="width:100%">
+						<div>
+							<hr class="bg-light">
+							<div class="text-center">
+								ИЛИ
 							</div>
-							<div class="form-group form-check align-self-center">
-								<input id="logged" class="form-check-input" type="checkbox" value="">
-								<label class="form-check-label">Запомнить</label>
-							</div>
-							<button type="submit" id="log-pass-log" class="btn btn-success align-self-center"><span class="icon-enter"></span> Войти</button>
-						</form>
-						<div class="d-flex flex-column" style="width:100%">
-							<div>
-								<hr class="bg-light">
-								<div class="text-center">
-									ИЛИ
-								</div>
-								<hr class="bg-light">
-							</div>
-							<a class="align-self-center" target="_blank" href="https://golos.io/create_account">
+							<hr class="bg-light">
+						</div>
+						<a class="align-self-center" target="_blank" href="https://golos.io/create_account">
 								<button type="button" class="btn btn-primary" aria-label="" style="display: inline-block; background-color: #297dce;"><span class="icon-clipboard"></span> Зарегистрироваться</button>
 							</a>
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="lding">
-			<div class="lds-css ng-scope">
-				<div class="lds-cube">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
+	</div>
+	<div class="modal" id="create-project-modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Создание проекта</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="title">Название:</label>
+							<input type="text" class="form-control" id="title" name="title" required="">
+						</div>
+						<div class="form-group">
+							<label for="description">Описание:</label>
+							<textarea class="form-control" id="description" name="description" rows="5" required=""></textarea>
+						</div>
+						<div class="form-group">
+							<label for="how-get">Местоположение с картой:</label>
+							<input type="text" class="form-control" id="how-get" name="howGet" required="">
+						</div>
+						<div class="form-group">
+							<label for="contacts">Краткое описание:</label>
+							<input type="text" class="form-control" id="contacts" name="contacts" required="">
+						</div>
+						<div class="form-group">
+							<label for="combs">Кол-во необходимых волонтеров:</label>
+							<input type="number" class="form-control" id="combs" name="combs" min="1" required="">
+						</div>
+						<div class="form-group">
+							<label for="data-start">Дата и время начала проекта:</label>
+							<input type="number" class="form-control" id="data-start" name="data-start" min="1" required="">
+						</div>
+						<div class="form-group">
+							<label for="data-end">Дата и время окончания проекта:</label>
+							<input type="number" class="form-control" id="data-end" name="data-end" min="1" required="">
+						</div>
+						<div class="form-group">
+							<label for="cost">Стоимость участия в сотах:</label>
+							<input type="number" class="form-control" id="cost" name="cost" min="1" required="">
+						</div>
+						<button type="submit" class="btn btn-success">Создать проект</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
 				</div>
 			</div>
 		</div>
-		<script src="https://cdn.jsdelivr.net/npm/golos-js@0.6.3/dist/golos.min.js"></script>
-		<script src="https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.13.1/dist/sweetalert2.all.min.js"></script>
-		<script src="app.js?201805201945"></script>
-	</body>
+	</div>
+	<div class="lding">
+		<div class="lds-css ng-scope">
+			<div class="lds-cube">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/golos-js@0.6.3/dist/golos.min.js"></script>
+	<script src="https://thednp.github.io/bootstrap.native/dist/bootstrap-native-v4.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.13.1/dist/sweetalert2.all.min.js"></script>
+	<script src="app.js?201805201945"></script>
+</body>
+
 </html>

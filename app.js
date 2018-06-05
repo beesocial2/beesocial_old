@@ -1,5 +1,5 @@
-//golos.config.set('websocket', 'wss://ws.testnet.golos.io');
-//golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
+// golos.config.set('websocket', 'wss://ws.testnet.golos.io');
+// golos.config.set('chain_id', '5876894a41e6361bde2e73278f07340f2eb8b41c2facd29099de9deef6cdb679');
 
 localStorage && localStorage.wif ? window.wif = JSON.parse(localStorage.wif) : window.wif = {};
 localStorage && localStorage.username ? window.username = localStorage.username : window.username = '';
@@ -17,6 +17,8 @@ let $createResourceModal = document.getElementById('create-resource-modal');
 let createResourceModal = new Modal($createResourceModal);
 let $resourceModal = document.getElementById('resource-modal');
 let resourceModal = new Modal($resourceModal);
+let $createProjectModal = document.getElementById('create-project-modal');
+let createProjectModal = new Modal($createProjectModal);
 let balance = 0;
 let $balance = document.querySelector('#balance');
 let $login = document.getElementById('login');
@@ -112,6 +114,47 @@ document.getElementById('create-resource-btn').addEventListener('click', functio
 
 let $createResourceModalForm = $createResourceModal.querySelector('form');
 $createResourceModalForm.addEventListener('submit', function(e) {
+	e.preventDefault();
+	let parentAuthor = '';
+	let parentPermlink = mainTag;
+	let title = this.title.value;
+	let permlink = urlLit(title, 0);
+	//let body = '<h1><a href="">Этот пост был создан на платформе BeeSocial</a></h1>' + this.description;
+	let body = `<h2>Title: ${title}</h2><h2>Description: ${this.description.value}</h2><h2>How get: ${this.howGet.value}</h2><h2>Contacts: ${this.contacts.value}</h2><h2>Combs: ${this.combs.value}</h2>`;
+	let jsonMetadata = {
+		app: 'beesocial/0.1',
+		canonical: 'https://beesocial.in/#resources/' + permlink,
+		app_account: 'beesocial',
+		data: {
+			title: title,
+			description: this.description.value,
+			howGet: this.howGet.value,
+			contacts: this.contacts.value,
+			combs: this.combs.value,
+			author: username,
+			permlink: permlink
+		},
+		tags: ['resources']
+	};
+	auth(function() {
+		loadingShow();
+		golos.broadcast.comment(wif['posting'], parentAuthor, parentPermlink, username, permlink, title, body, jsonMetadata, function (err, result) {
+			loadingHide();
+			if ( ! err) {
+				$createResourceModalForm.reset();
+				createResourceModal.hide();
+				window.location.hash = '#resources/' + permlink;
+			} else console.error(err);
+		});
+	});
+});
+
+document.getElementById('create-project-btn').addEventListener('click', function() {
+	createProjectModal.show();
+});
+
+let $createProjectModalForm = $createProjectModal.querySelector('form');
+$createProjectModalForm.addEventListener('submit', function(e) {
 	e.preventDefault();
 	let parentAuthor = '';
 	let parentPermlink = mainTag;
