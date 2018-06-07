@@ -28,7 +28,6 @@ let $logout = document.getElementById('logout');
 let $resourceItem = document.querySelector('#resource-item');
 let resourceItemSelected;
 let callbackAuth;
-
 let $loader = document.getElementsByClassName('lding')[0];
 let loadingShow = function() {
 	$loader.style.display = 'block';
@@ -84,7 +83,6 @@ arr.forEach(function(item, i, arr) {
 	});
 });
 
-
 let auth = function(callback) {
 	if (wif && username) callback();
 	else {
@@ -93,7 +91,6 @@ let auth = function(callback) {
 	}
 };
 
-//
 $login.addEventListener('click', function() {
 	modalAuth.show();
 });
