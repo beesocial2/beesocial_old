@@ -77,6 +77,14 @@ document.getElementById('form-login-pass').addEventListener('submit', async(e) =
 	}
 });
 
+let arr = document.querySelector('#projects').querySelectorAll('.btn');
+arr.forEach(function(item, i, arr) {
+  arr[i].addEventListener('click', function() {
+	projectModal.show(); // projects modals
+	});
+});
+
+
 let auth = function(callback) {
 	if (wif && username) callback();
 	else {
