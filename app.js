@@ -408,4 +408,12 @@ window.addEventListener('hashchange', function() {
 	}
 });
 
+document.querySelector('#avatar').addEventListener("focusin", function () {
+	document.querySelector('#dropdown-avatar').classList.add('show');
+});
+
+document.querySelector('#dropdown-avatar').addEventListener('click', function () {
+	document.querySelector('#dropdown-avatar').classList.remove('show');
+});
+
 window.dispatchEvent(new CustomEvent('hashchange'));
